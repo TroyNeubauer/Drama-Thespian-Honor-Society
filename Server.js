@@ -2,8 +2,7 @@
 var http = require("http"),
     url = require("url"),
     path = require("path"),
-    fs = require("fs")
-    port = 8192;
+    fs = require("fs");
 
 server = http.createServer(function(request, response) {
 	var contentTypesByExtension = {
@@ -47,7 +46,7 @@ server.on("error", function(error) {
 	console.error("Error is: " + error);
 	process.exit();
 });
-server.listen(port);
+server.listen(80);
 
 
 var io = require('socket.io').listen(server);
