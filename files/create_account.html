@@ -3,13 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Complete Bootstrap 4 Website Layout</title>
+	<title>Create Account - OHS Thespian Honor Society</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 	<link href="style.css" rel="stylesheet">
+	<link href="signin.css" rel="stylesheet">
+	<link rel="icon" href="img/icon.png">
 </head>
 <body>
 
@@ -34,7 +36,7 @@
 					<a class="nav-link" href="signin.html">Sign in</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" href="leaderboard.html">Leaderboard</a>
+					<a class="nav-link" href="leaderboard.html">Leaderboard</a>
 				</li>
 			</ul>
 		</div>
@@ -43,6 +45,42 @@
 
 </nav>
 
+<div id="create_account" class="card padding center-text">
+	<article class="card-body">
+	<a href="signin.html" class="float-right btn btn-outline-primary">Sign in</a>
+	<h4 class="card-title mb-4 mt-1">Create account</h4>
+		<form>
+			<div class="form-group">
+				<label>Your email</label>
+				<input name="" class="form-control" placeholder="Email" type="email">
+			</div> <!-- form-group// -->
+			<div class="form-group">
+				<a class="float-right" href="#" onclick="alert('Sorry this isn\'t implemented yet!');">Forgot?</a>
+				<label>Your password</label>
+				<input class="form-control" placeholder="******" type="password">
+			</div> <!-- form-group// --> 
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-block"> Create account  </button>
+			</div> <!-- form-group// -->                                                           
+		</form>
+	</article>
+</div> <!-- card.// -->
+
+<!--- Two Column Section -->
+<div class="container-fluid padding">
+	<div class="row padding">
+		<div class="col-lg-6">
+			<h2>We take security seriously</h2>
+			<p>Luclky, because I made the backend I can tell you all about how it works!</p>
+			<p>This website make use of all the latest computer secutiry features that we learn about in the <a href="http://www.oakcsclub.win">OHS Computer Science Club</a>. Most importantly, iterative hashing. Rather than storing your password in so called "plain text" we store <a href="https://en.wikipedia.org/wiki/Hash_function#Standard_uses_of_hashing_in_cryptography">hashed</a> versions of your password. This means that even if a hacker hacked our database, strong passwords would take years to break. Furthermore, our database is complex enough to not fall victim to SQL injection or cross site scripting attacks.</p>
+
+			
+		</div>
+		<div class="col-lg-6">
+			<img src="img/secure.png" class="img-fluid">
+		</div>
+	</div>
+</div>
 
 <!--- Footer -->
 <footer>
