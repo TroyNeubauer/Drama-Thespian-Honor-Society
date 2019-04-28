@@ -1,0 +1,5 @@
+2019-04-28 08:20:45.260 [main] [INFO] com.troy.dramaserver.Main: Starting Server
+2019-04-28 08:20:45.313 [main] [INFO] com.troy.dramaserver.Server: Successfully read saved database
+2019-04-28 08:20:48.461 [main] [INFO] com.troy.dramaserver.Server: Preparing to shutdown the server
+2019-04-28 08:20:48.469 [main] [INFO] com.troy.dramaserver.Server: Successfully saved database
+2019-04-28 08:20:48.470 [main] [INFO] com.troy.dramaserver.Server: server shutdown
