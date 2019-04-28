@@ -1,0 +1,9 @@
+apply plugin: 'java-library'
+
+repositories {
+}
+
+dependencies {
+
+}
+

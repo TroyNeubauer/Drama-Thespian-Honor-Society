@@ -1,55 +1,106 @@
-var https = require("https"),
-    url = require("url"),
-    path = require("path"),
-    fs = require("fs");
+const express = require('express');
+const fs = require('fs');
+const https = require('https');
+const crypto = require('crypto');
+const serialize = require('serialize-javascript');
 
-var privateKey  = fs.readFileSync('/etc/letsencrypt/live/dramaserver.tk/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('/etc/letsencrypt/live/dramaserver.tk/cert.pem', 'utf8');
+function deserialize(serializedJavascript){
+  return eval('(' + serializedJavascript + ')');
+}
 
-var credentials = {key: privateKey, cert: certificate};
+const app = express();
+const databaseName = "database.json";
+const pbkdf2 = require('pbkdf2')
+const hashIterations = 1000, keyLength = 64, saltLength = 32;
 
-server = https.createServer(credentials, function(request, response) {
-	var contentTypesByExtension = {
-		'.html': "text/html",
-		'.css':  "text/css",
-		'.js':   "text/javascript"
+if(!fs.existsSync(databaseName)) {
+	fs.writeFileSync(databaseName, "{}\n");
+	console.log("Created new database file");
+}
+
+var users = deserialize(fs.readFileSync(databaseName));
+
+console.log("Read databse file: " + serialize(users, 2));
+
+function hash(salt, password) {
+	return pbkdf2.pbkdf2Sync(password, salt, hashIterations, keyLength, 'sha512')
+}
+
+function registerUser(name, username, email, password) {
+	const salt = crypto.randomBytes(saltLength);
+	const hashedPassword = hash(salt, password);
+	users[username] = {
+		name: name,
+		username: username,
+		email: email,
+		password: hashedPassword,
+		salt: salt,
+		picture: "",
+		inductionDate: new Date(0),
+		gradYear: 0,
+		studentId: 0,
+		phoneNumber: "",
+		address: ""
 	};
-	var uri = url.parse(request.url).pathname;
-	var filename = path.join("/home/ubuntu/files", uri);
+	console.log("Registered user: " + username + " email: " + email + " password: " + hashedPassword.toString('hex'));
+}
 
-	if(fs.existsSync(filename)) {
-		//console.log("found " + uri + " at " + filename);
-
-		if (fs.statSync(filename).isDirectory()) {
-			filename = path.join(filename, "index.html");
-		}
-
-		fs.readFile(filename, "binary", function(err, file) {
-			if(err) {
-				//console.log("Failed to read existing file " + filename);
-				response.writeHead(500, {"Content-Type": "text/plain"});
-				response.write(err + "\n");
-				response.end();
-				return;
-			}
-			var headers = {};
-			var contentType = contentTypesByExtension[path.extname(filename)];
-			if (contentType) headers["Content-Type"] = contentType;
-			response.writeHead(200, headers);
-			response.write(file, "binary");
-			response.end();
-		});
+app.get('/__auth', function (req, res) {
+	//req.query
+	if((req.query["username"] == undefined && req.query["email"] == undefined) || req.query["password"] == undefined) {
+		res.send("Invalid request");
 	} else {
-		response.writeHead(404, {"Content-Type": "text/plain"});
-		response.write("404 Not Found.\n");
-		console.log("Coundnt file file: " + uri + " at " + filename);
-		response.end();
-		return;
+		user = undefined;
+		if(req.query["username"] != undefined) {//lookup username
+			user = users[req.query["username"]];
+		} else {//lookup email
+			for (let [key, value] of Object.entries(users)) {
+				if (value["email"] == req.query["email"]) {
+					user = value;
+					break;
+				}
+			}
+		}
+		if(user == undefined) {
+			res.send("User not found ");
+		} else {
+			passwordHash = user["password"];
+			computed = hash(user["salt"], user["password"]);
+			if(passwordHash == computed) {
+				res.send("Good auth for user: " + user["name"]);
+			} else {
+				res.send("Bad password for user: " + user["name"] +" \ncomputed: " computed + "\nactual: " + passwordHash);
+			}
+		}
 	}
 });
-server.on("error", function(error) {
-	console.error("Another instance of the server is already running. Aborting!");
-	console.error("Error is: " + error);
-	process.exit();
+
+app.get('/__signup', function (req, res) {
+	//req.query
+	if(req.query["name"] == undefined || req.query["username"] == undefined || req.query["email"] == undefined || req.query["password"] == undefined) {
+		res.send("Invalid request");
+	} else {
+		registerUser(req.query["name"], req.query["username"], req.query["email"], req.query["password"])
+		res.send(serialize(users, 2));
+	}
 });
-server.listen(443);
+
+app.use(express.static('public'));
+
+https.createServer({
+	key: fs.readFileSync("/etc/letsencrypt/live/dramaserver.tk/privkey.pem"),
+	cert: fs.readFileSync("/etc/letsencrypt/live/dramaserver.tk/cert.pem")
+}, app).listen(443, function () {
+	console.log("Ready to serve clients...");
+})
+
+process.on('SIGINT', function () {
+	console.log("Stopping server");
+	fs.writeFile(databaseName, serialize(users), function(err) {
+		if(err) {
+			console.log("Could not save database file: " + err);
+		}
+		console.log("Saved database file");
+		process.exit(0);
+	});
+});
