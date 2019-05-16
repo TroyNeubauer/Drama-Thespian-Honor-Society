@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Complete Bootstrap 4 Website Layout</title>
+	<title>Add </title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -34,9 +34,6 @@
 				<li class="nav-item">
 					<a class="nav-link" href="signin.html">Sign in</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="leaderboard.html">Leaderboard</a>
-				</li>
 			</ul>
 		</div>
 
@@ -44,6 +41,72 @@
 
 </nav>
 
+<!---  -->
+<div class="dropdown">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="category-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		<a class="dropdown-item" href="#" onclick="Acting()">Acting</a>
+		<a class="dropdown-item" href="#" onclick="Production()">Production</a>
+		<a class="dropdown-item" href="#" onclick="Business()">Business</a>
+		<a class="dropdown-item" href="#" onclick="Directing()">Directing</a>
+		<a class="dropdown-item" href="#" onclick="Writing()">Writing</a>
+		<a class="dropdown-item" href="#" onclick="Miscellaneous()">Miscellaneous</a>
+		<a class="dropdown-item" href="#" onclick="Advocacy()">Advocacy</a>
+		<a class="dropdown-item" href="#" onclick="Officers()">Officers</a>
+		<a class="dropdown-item" href="#" onclick="Audience()">Audience</a>
+	</div>
+</div>
+<div class="test">
+	<button class="btn btn-secondary dropdown-toggle" type="button" id="role-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Role</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="role-select-entries"></div>
+</div>
+
+
+<script src="js/roles.js"></script>
+<script>
+	function UpdateCategory() {
+		$("#category-select").text(arguments.callee.caller.name);
+		var entries = $("#role-select-entries");
+		entries.empty();
+		for (var i = 0; i < roles.length; i++) {
+			var object = roles[i];
+			if (typeof(object) === "string" && arguments.callee.caller.name === object) {
+				while (typeof(object = roles[++i]) === "object") {
+					var item = $("<a class=\"dropdown-item\" href=\"#\">"+object["name"]+"</a>");
+					entries.append(item);
+				}
+			}
+		}
+	}
+	function Acting() {
+		UpdateCategory();
+	}
+	function Production() {
+		UpdateCategory();
+	}
+	function Business() {
+		UpdateCategory();
+	}
+	function Directing() {
+		UpdateCategory();
+	}
+	function Writing() {
+		UpdateCategory();
+	}
+	function Miscellaneous() {
+		UpdateCategory();
+	}
+	function Advocacy() {
+		UpdateCategory();
+	}
+	function Officers() {
+		UpdateCategory();
+	}
+	function Audience() {
+		UpdateCategory();
+	}
+
+</script>
 
 <!--- Footer -->
 <footer>
@@ -52,10 +115,12 @@
 			<div class="col-md-4">
 				<img src="img/icon_small.png">
 				<hr class="light">
-				<p>OHS Drama</p>
+				<p>Oakton Theatre</p>
 				<a href="mailto: postmaster@oaktondrama.org">postmaster@oaktondrama.org</a>
-				<p>2900 Sutton Rd.</p>
-				<p>Vienna VA, 20181</p>
+				<p>
+				<a href="mailto: TIPS@oaktondrama.org">TIPS@oaktondrama.org</a>
+				<p>
+				<a href="mailto: VLGelinas@fcps.edu">VLGelinas@fcps.edu</a>
 			</div>
 			<div class="col-md-4">
 				<hr class="light">
@@ -65,7 +130,7 @@
 				<a href="mailto: troyneubauer@gmail.com">troyneubauer@gmail.com</a>
 				<p>
 				<a href="https://www.github.com/TroyNeubauer">github.com/troyneubauer</a>
-				<p>mywebsite</p>
+				<p></p>
 			</div>
 			<div class="col-md-4">
 				<hr class="light">
@@ -75,7 +140,6 @@
 				<a href="mailto: oaktoncsclub@gmail.com">oaktoncsclub@gmail.com</a>
 				<P>
 				<a href="http://www.oakcsclub.win">oakcsclub.win</a>
-				<p>OHS Trailer 2</p>
 			</div>
 			<div class="col-12">
 				<hr class="light-100">
@@ -83,12 +147,9 @@
 			</div>
 		</div>
 	</div>
-
-
 </footer>
 
 
 
 </body>
 </html>
-
