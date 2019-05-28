@@ -41,39 +41,115 @@
 
 </nav>
 
-<!---  -->
-<div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" type="button" id="category-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
-	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		<a class="dropdown-item" href="#" onclick="Acting()">Acting</a>
-		<a class="dropdown-item" href="#" onclick="Production()">Production</a>
-		<a class="dropdown-item" href="#" onclick="Business()">Business</a>
-		<a class="dropdown-item" href="#" onclick="Directing()">Directing</a>
-		<a class="dropdown-item" href="#" onclick="Writing()">Writing</a>
-		<a class="dropdown-item" href="#" onclick="Miscellaneous()">Miscellaneous</a>
-		<a class="dropdown-item" href="#" onclick="Advocacy()">Advocacy</a>
-		<a class="dropdown-item" href="#" onclick="Officers()">Officers</a>
-		<a class="dropdown-item" href="#" onclick="Audience()">Audience</a>
+<form>
+	<div class="dropdown">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="category-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			<a class="dropdown-item" href="#" onclick="Acting()">Acting</a>
+			<a class="dropdown-item" href="#" onclick="Production()">Production</a>
+			<a class="dropdown-item" href="#" onclick="Business()">Business</a>
+			<a class="dropdown-item" href="#" onclick="Directing()">Directing</a>
+			<a class="dropdown-item" href="#" onclick="Writing()">Writing</a>
+			<a class="dropdown-item" href="#" onclick="Miscellaneous()">Miscellaneous</a>
+			<a class="dropdown-item" href="#" onclick="Advocacy()">Advocacy</a>
+			<a class="dropdown-item" href="#" onclick="Officers()">Officers</a>
+			<a class="dropdown-item" href="#" onclick="Audience()">Audience</a>
+		</div>
 	</div>
-</div>
-<div class="test">
-	<button class="btn btn-secondary dropdown-toggle" type="button" id="role-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Role</button>
-	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="role-select-entries"></div>
-</div>
+	<div>
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="role-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Role</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="role-select-entries"></div>
+	</div>
+
+	<div>
+		<div id="data"></div>
+		<p id="points-info"></p>
+	</div>
+	<div class="form-group">
+		<div id="value-input" style="display:none">
+			<label class="control-label" id="value-label"></label>
+			<textarea class="form-control" rows="1"></textarea>
+		</div>
+		<label class="control-label">What role did you play?</label>
+		<textarea class="form-control" id="role-input" rows="10"></textarea>
+	</div>
+
+	<div class="form-group">
+		<input type="button" class="btn btn-primary btnSeccion" value="Submit"onclick="OnSubmit()"></input>
+	</div>
+</form>
 
 
 <script src="js/roles.js"></script>
 <script>
+	function OnSubmit() {
+		var text = $("#role-input")[0].value;
+		//Submit everything to server
+
+		console.log("Category: " + $("#category-select").text() + " role: " + $("#role-select").text() + " text " + text);
+	}
+
+	function getPointsString(points, rate = undefined) {
+		var result = "";
+		if (points == 1) {
+			result += "1 point";
+		} else {
+			result += points + " points"
+		}
+		if (rate != undefined) {
+			result += " per ";
+			result += rate;
+		}
+		return result;
+	}
+
 	function UpdateCategory() {
-		$("#category-select").text(arguments.callee.caller.name);
+		var categorySelect = $("#category-select");
+		var roleSelect = $("#role-select");
 		var entries = $("#role-select-entries");
-		entries.empty();
-		for (var i = 0; i < roles.length; i++) {
-			var object = roles[i];
-			if (typeof(object) === "string" && arguments.callee.caller.name === object) {
-				while (typeof(object = roles[++i]) === "object") {
-					var item = $("<a class=\"dropdown-item\" href=\"#\">"+object["name"]+"</a>");
-					entries.append(item);
+		var category = arguments.callee.caller.name;
+		if (category != categorySelect.text()) {
+			roleSelect.text("Role");
+			$("#points-info").text("");
+			entries.empty();
+			categorySelect.text(category);
+			for (var i = 0; i < roles.length; i++) {
+				if (typeof(roles[i]) === "string" && category === roles[i]) {
+					while (typeof(roles[++i]) === "object") {
+						let object = roles[i];
+						let item = $("<a class=\"dropdown-item\" href=\"#\">"+object["name"]+"</a>");
+						item.bind("click", function() {
+							$("#role-select").text(object["name"]);
+							let data = $("#data");
+							data.empty();
+							if (object["oneAct"] != undefined) {
+								data.append(
+								"<div><button class=\"btn btn-secondary dropdown-toggle\" type=\"button\" id=\"duration-select\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">Duration</button>" +
+									"<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">" +
+										"<a class=\"dropdown-item\" href=\"#\" id=\"one-act\">One Act</a>" +
+										"<a class=\"dropdown-item\" href=\"#\" id=\"full-length\">Full Length</a>" +
+									"</div>" +
+								"</div>");
+								$("#one-act").bind("click", function() {
+									$("#points-info").text(getPointsString(object["oneAct"]));
+								});
+								$("#full-length").bind("click", function() {
+									$("#points-info").text(getPointsString(object["fullLength"]));
+								});
+
+							} else {//Set value
+								if(object["rate"] != undefined) {//Based on rate
+									$("#points-info").text(getPointsString(object["value"], object["rate"]));
+									$("#value-input").show();
+									$("#value-label").text("How many " + object["rate"] + "s did you complete?");
+									console.log("showing");
+								} else {//Normal value
+									$("#points-info").text(getPointsString(object["value"]));
+								}
+							}
+						});
+						entries.append(item);
+					}
 				}
 			}
 		}

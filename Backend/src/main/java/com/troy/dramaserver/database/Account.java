@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class Account implements Serializable {
 
+	private long userID;
 	private String name, email;
 	private byte[] password, salt;
 	private String picturePath;
@@ -16,11 +17,12 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public Account(String name, byte[] password, String email, byte[] salt) {
+	public Account(String name, byte[] password, String email, byte[] salt, long userID) {
 		this.name = name;
 		this.password = password;
 		this.email = email;
 		this.salt = salt;
+		this.userID = userID;
 	}
 
 	public String getName() {
@@ -118,6 +120,10 @@ public class Account implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public long getUserID() {
+		return userID;
 	}
 
 }

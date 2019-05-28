@@ -13,6 +13,7 @@ public class Database implements Serializable {
 	private HashMap<String, Account> users = new HashMap<String, Account>();
 
 	private ArrayList<PointEntry> approvedPoints = new ArrayList<PointEntry>(), waitingPoints = new ArrayList<PointEntry>();
+	private long nextUserID = 1;
 
 	private byte[] pepper = new byte[PEPPER_BYTES];
 	private transient SecureRandom random = new SecureRandom();
@@ -43,7 +44,7 @@ public class Database implements Serializable {
 		byte[] hash = Security.getHashedPassword(password, salt, pepper, ITERATIONS, HASH_BYTES);
 		for (int i = 0; i < password.length; i++)
 			password[i] = (char) 0x00;
-		Account account = new Account(username, hash, email, salt);
+		Account account = new Account(username, hash, email, salt, nextUserID++);
 		users.put(username, account);
 
 		return "{\"success\"=true}";
