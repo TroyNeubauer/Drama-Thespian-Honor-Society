@@ -41,6 +41,7 @@ public class Server {
 				}
 			}
 		}
+		this.net = new Net();
 	}
 
 	public String registerUser(String username, char[] password, String email) {

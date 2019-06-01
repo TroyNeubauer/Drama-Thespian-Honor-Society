@@ -1,5 +1,466 @@
-2019-04-28 17:22:09.051 [main] [INFO] com.troy.dramaserver.Main: Starting Server
-2019-04-28 17:22:09.121 [main] [INFO] com.troy.dramaserver.Server: Successfully read saved database
-2019-04-28 18:26:02.545 [main] [INFO] com.troy.dramaserver.Server: Preparing to shutdown the server
-2019-04-28 18:26:02.557 [main] [INFO] com.troy.dramaserver.Server: Successfully saved database
-2019-04-28 18:26:02.557 [main] [INFO] com.troy.dramaserver.Server: server shutdown
+2019-06-01 12:42:38.680 [main] [INFO] com.troy.dramaserver.Main: Starting Server
+2019-06-01 12:42:39.321 [main] [INFO] com.troy.dramaserver.Server: Creating new database
+2019-06-01 12:42:39.332 [main] [DEBUG] io.netty.util.internal.logging.InternalLoggerFactory: Using Log4J2 as the default logging framework
+2019-06-01 12:42:39.335 [main] [DEBUG] io.netty.channel.MultithreadEventLoopGroup: -Dio.netty.eventLoopThreads: 8
+2019-06-01 12:42:39.350 [main] [DEBUG] io.netty.util.internal.InternalThreadLocalMap: -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+2019-06-01 12:42:39.350 [main] [DEBUG] io.netty.util.internal.InternalThreadLocalMap: -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+2019-06-01 12:42:39.356 [main] [DEBUG] io.netty.channel.nio.NioEventLoop: -Dio.netty.noKeySetOptimization: false
+2019-06-01 12:42:39.357 [main] [DEBUG] io.netty.channel.nio.NioEventLoop: -Dio.netty.selectorAutoRebuildThreshold: 512
+2019-06-01 12:42:39.370 [main] [DEBUG] io.netty.util.internal.PlatformDependent: Platform: Windows
+2019-06-01 12:42:39.372 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: -Dio.netty.noUnsafe: false
+2019-06-01 12:42:39.372 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: Java version: 8
+2019-06-01 12:42:39.374 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: sun.misc.Unsafe.theUnsafe: available
+2019-06-01 12:42:39.374 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: sun.misc.Unsafe.copyMemory: available
+2019-06-01 12:42:39.375 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: java.nio.Buffer.address: available
+2019-06-01 12:42:39.376 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: direct buffer constructor: available
+2019-06-01 12:42:39.377 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: java.nio.Bits.unaligned: available, true
+2019-06-01 12:42:39.377 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable prior to Java9
+2019-06-01 12:42:39.377 [main] [DEBUG] io.netty.util.internal.PlatformDependent0: java.nio.DirectByteBuffer.<init>(long, int): available
+2019-06-01 12:42:39.377 [main] [DEBUG] io.netty.util.internal.PlatformDependent: sun.misc.Unsafe: available
+2019-06-01 12:42:39.378 [main] [DEBUG] io.netty.util.internal.PlatformDependent: -Dio.netty.tmpdir: C:\Users\TROYNE~1\AppData\Local\Temp (java.io.tmpdir)
+2019-06-01 12:42:39.378 [main] [DEBUG] io.netty.util.internal.PlatformDependent: -Dio.netty.bitMode: 64 (sun.arch.data.model)
+2019-06-01 12:42:39.379 [main] [DEBUG] io.netty.util.internal.PlatformDependent: -Dio.netty.maxDirectMemory: 1883242496 bytes
+2019-06-01 12:42:39.379 [main] [DEBUG] io.netty.util.internal.PlatformDependent: -Dio.netty.uninitializedArrayAllocationThreshold: -1
+2019-06-01 12:42:39.380 [main] [DEBUG] io.netty.util.internal.CleanerJava6: java.nio.ByteBuffer.cleaner(): available
+2019-06-01 12:42:39.380 [main] [DEBUG] io.netty.util.internal.PlatformDependent: -Dio.netty.noPreferDirect: false
+2019-06-01 12:42:39.385 [main] [DEBUG] io.netty.util.internal.PlatformDependent: org.jctools-core.MpscChunkedArrayQueue: available
+2019-06-01 12:42:39.428 [main] [DEBUG] io.netty.channel.DefaultChannelId: -Dio.netty.processId: 18136 (auto-detected)
+2019-06-01 12:42:39.430 [main] [DEBUG] io.netty.util.NetUtil: -Djava.net.preferIPv4Stack: false
+2019-06-01 12:42:39.431 [main] [DEBUG] io.netty.util.NetUtil: -Djava.net.preferIPv6Addresses: false
+2019-06-01 12:42:40.011 [main] [DEBUG] io.netty.util.NetUtil: Loopback interface: lo (Software Loopback Interface 1, 127.0.0.1)
+2019-06-01 12:42:40.012 [main] [DEBUG] io.netty.util.NetUtil: Failed to get SOMAXCONN from sysctl and file \proc\sys\net\core\somaxconn. Default: 200
+2019-06-01 12:42:40.616 [main] [DEBUG] io.netty.channel.DefaultChannelId: -Dio.netty.machineId: f8:28:19:ff:fe:89:c7:c1 (auto-detected)
+2019-06-01 12:42:40.630 [main] [DEBUG] io.netty.util.ResourceLeakDetector: -Dio.netty.leakDetection.level: simple
+2019-06-01 12:42:40.630 [main] [DEBUG] io.netty.util.ResourceLeakDetector: -Dio.netty.leakDetection.targetRecords: 4
+2019-06-01 12:42:40.649 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.numHeapArenas: 8
+2019-06-01 12:42:40.649 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.numDirectArenas: 8
+2019-06-01 12:42:40.649 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.pageSize: 8192
+2019-06-01 12:42:40.649 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.maxOrder: 11
+2019-06-01 12:42:40.650 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.chunkSize: 16777216
+2019-06-01 12:42:40.650 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.tinyCacheSize: 512
+2019-06-01 12:42:40.650 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.smallCacheSize: 256
+2019-06-01 12:42:40.650 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.normalCacheSize: 64
+2019-06-01 12:42:40.650 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+2019-06-01 12:42:40.651 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.cacheTrimInterval: 8192
+2019-06-01 12:42:40.651 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+2019-06-01 12:42:40.651 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.useCacheForAllThreads: true
+2019-06-01 12:42:40.651 [main] [DEBUG] io.netty.buffer.PooledByteBufAllocator: -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+2019-06-01 12:42:40.657 [main] [DEBUG] io.netty.buffer.ByteBufUtil: -Dio.netty.allocator.type: pooled
+2019-06-01 12:42:40.658 [main] [DEBUG] io.netty.buffer.ByteBufUtil: -Dio.netty.threadLocalDirectBufferSize: 0
+2019-06-01 12:42:40.658 [main] [DEBUG] io.netty.buffer.ByteBufUtil: -Dio.netty.maxThreadLocalCharBufferSize: 16384
+2019-06-01 12:42:40.672 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65] REGISTERED
+2019-06-01 12:42:40.674 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65] BIND: 0.0.0.0/0.0.0.0:8080
+2019-06-01 12:42:40.676 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] ACTIVE
+2019-06-01 12:42:59.125 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x3c2d10b4, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51923]
+2019-06-01 12:42:59.128 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:42:59.129 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x630d048d, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51924]
+2019-06-01 12:42:59.129 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:42:59.160 [nioEventLoopGroup-3-1] [DEBUG] io.netty.buffer.AbstractByteBuf: -Dio.netty.buffer.checkAccessible: true
+2019-06-01 12:42:59.160 [nioEventLoopGroup-3-1] [DEBUG] io.netty.buffer.AbstractByteBuf: -Dio.netty.buffer.checkBounds: true
+2019-06-01 12:42:59.162 [nioEventLoopGroup-3-1] [DEBUG] io.netty.util.ResourceLeakDetectorFactory: Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@31850612
+2019-06-01 12:42:59.199 [nioEventLoopGroup-3-2] [DEBUG] io.netty.handler.ssl.OpenSsl: netty-tcnative not in the classpath; OpenSslEngine will be unavailable.
+2019-06-01 12:43:00.041 [nioEventLoopGroup-3-2] [DEBUG] io.netty.handler.ssl.JdkSslContext: Default protocols (JDK): [TLSv1.2, TLSv1.1, TLSv1] 
+2019-06-01 12:43:00.042 [nioEventLoopGroup-3-2] [DEBUG] io.netty.handler.ssl.JdkSslContext: Default cipher suites (JDK): [TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA]
+2019-06-01 12:43:00.067 [nioEventLoopGroup-3-2] [DEBUG] io.netty.util.Recycler: -Dio.netty.recycler.maxCapacityPerThread: 4096
+2019-06-01 12:43:00.067 [nioEventLoopGroup-3-2] [DEBUG] io.netty.util.Recycler: -Dio.netty.recycler.maxSharedCapacityFactor: 2
+2019-06-01 12:43:00.068 [nioEventLoopGroup-3-2] [DEBUG] io.netty.util.Recycler: -Dio.netty.recycler.linkCapacity: 16
+2019-06-01 12:43:00.068 [nioEventLoopGroup-3-2] [DEBUG] io.netty.util.Recycler: -Dio.netty.recycler.ratio: 8
+2019-06-01 12:43:00.152 [nioEventLoopGroup-3-1] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 17 more
+2019-06-01 12:43:00.152 [nioEventLoopGroup-3-2] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 17 more
+2019-06-01 12:43:00.163 [nioEventLoopGroup-3-2] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:405) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:372) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:355) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.channelInactive(SslHandler.java:1078) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:236) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1403) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:912) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$8.run(AbstractChannel.java:827) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:405) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 19 more
+2019-06-01 12:43:00.163 [nioEventLoopGroup-3-1] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:405) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:372) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:355) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.channelInactive(SslHandler.java:1078) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:236) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1403) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:912) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$8.run(AbstractChannel.java:827) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:405) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 19 more
+2019-06-01 12:43:54.410 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x3a56b24c, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51971]
+2019-06-01 12:43:54.411 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:43:54.411 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0xfcaf809b, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51972]
+2019-06-01 12:43:54.412 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:43:54.434 [nioEventLoopGroup-3-3] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 17 more
+2019-06-01 12:43:54.435 [nioEventLoopGroup-3-3] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:405) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:372) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:355) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.channelInactive(SslHandler.java:1078) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:236) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1403) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:912) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$8.run(AbstractChannel.java:827) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:405) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 19 more
+2019-06-01 12:43:54.442 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x3590eccf, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51973]
+2019-06-01 12:43:54.437 [nioEventLoopGroup-3-4] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 17 more
+2019-06-01 12:43:54.444 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:43:54.444 [nioEventLoopGroup-3-4] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:405) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:372) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:355) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.channelInactive(SslHandler.java:1078) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:236) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1403) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:912) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$8.run(AbstractChannel.java:827) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:405) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 19 more
+2019-06-01 12:43:54.488 [nioEventLoopGroup-3-5] [DEBUG] io.netty.handler.ssl.SslHandler: [id: 0x3590eccf, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51973] HANDSHAKEN: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+2019-06-01 12:43:54.493 [nioEventLoopGroup-3-5] [DEBUG] io.netty.channel.DefaultChannelPipeline: Discarded inbound message PooledUnsafeDirectByteBuf(ridx: 0, widx: 454, cap: 483) that reached at the tail of the pipeline. Please check your pipeline configuration.
+2019-06-01 12:43:57.849 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x49b30bf8, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51977]
+2019-06-01 12:43:57.850 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:43:57.850 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x320b1329, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51978]
+2019-06-01 12:43:57.850 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ COMPLETE
+2019-06-01 12:43:57.862 [nioEventLoopGroup-3-6] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 17 more
+2019-06-01 12:43:57.862 [nioEventLoopGroup-3-7] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:278) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:352) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1408) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:360) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:930) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:682) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:617) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:534) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_181]
+Caused by: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at sun.security.ssl.Alerts.getSSLException(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.fatal(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.recvAlert(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.readNetRecord(Unknown Source) ~[?:1.8.0_181]
+	at sun.security.ssl.SSLEngineImpl.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at javax.net.ssl.SSLEngine.unwrap(Unknown Source) ~[?:1.8.0_181]
+	at io.netty.handler.ssl.SslHandler$SslEngineType$3.unwrap(SslHandler.java:295) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1332) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1227) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1274) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:502) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:441) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	... 17 more
+2019-06-01 12:43:57.863 [nioEventLoopGroup-2-1] [INFO] io.netty.handler.logging.LoggingHandler: [id: 0x235fbd65, L:/0:0:0:0:0:0:0:0:8080] READ: [id: 0x4a06245d, L:/0:0:0:0:0:0:0:1:8080 - R:/0:0:0:0:0:0:0:1:51979]
+2019-06-01 12:43:57.863 [nioEventLoopGroup-3-6] [WARN] io.netty.channel.DefaultChannelPipeline: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+io.netty.handler.codec.DecoderException: javax.net.ssl.SSLException: Received fatal alert: certificate_unknown
+	at io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:472) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:405) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInputClosed(ByteToMessageDecoder.java:372) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.codec.ByteToMessageDecoder.channelInactive(ByteToMessageDecoder.java:355) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.handler.ssl.SslHandler.channelInactive(SslHandler.java:1078) ~[netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelInactive(AbstractChannelHandlerContext.java:236) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.channelInactive(DefaultChannelPipeline.java:1403) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:257) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelInactive(AbstractChannelHandlerContext.java:243) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.DefaultChannelPipeline.fireChannelInactive(DefaultChannelPipeline.java:912) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.AbstractChannel$AbstractUnsafe$8.run(AbstractChannel.java:827) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:405) [netty-all-4.1.36.Final.jar:4.1.36.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500) [netty-all-4.1
