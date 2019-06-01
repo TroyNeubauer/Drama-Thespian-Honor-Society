@@ -42,7 +42,7 @@ public class Database implements Serializable {
 		random.nextBytes(salt);
 
 		byte[] hash = Security.getHashedPassword(password, salt, pepper, ITERATIONS, HASH_BYTES);
-		for (int i = 0; i < password.length; i++)
+		for (int i = 0; i < password.length; i++)//Zero out the password so that it doesnt stay around in memory
 			password[i] = (char) 0x00;
 		Account account = new Account(username, hash, email, salt, nextUserID++);
 		users.put(username, account);

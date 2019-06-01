@@ -7,6 +7,7 @@ public class Net {
 	}
 
 	public void join() {
+		
 	}
 	
 }
