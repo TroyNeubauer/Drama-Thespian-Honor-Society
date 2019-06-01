@@ -68,7 +68,7 @@
 	<div class="form-group">
 		<div id="value-input" style="display:none">
 			<label class="control-label" id="value-label"></label>
-			<textarea class="form-control" rows="1"></textarea>
+			<input type="number" id="value" min="0" step="1" data-bind="value:replyNumber"></input>
 		</div>
 		<label class="control-label">What role did you play?</label>
 		<textarea class="form-control" id="role-input" rows="10"></textarea>
@@ -82,11 +82,50 @@
 
 <script src="js/roles.js"></script>
 <script>
+	function assert(condition, message) {
+		if (!condition) {
+			message = message || "Assertion failed";
+			if (typeof Error !== "undefined") {
+				throw new Error(message);
+			}
+			throw message; // Fallback
+		}
+	}
+
 	function OnSubmit() {
 		var text = $("#role-input")[0].value;
+		var category = $("#category-select").text()
+		var role = $("#role-select").text();
 		//Submit everything to server
+		console.log("Category: " + category + " role: " + role + " text " + text);
+		var info = getRoleInfo(category, role);
+		var send = {};
+		send["category"] = category;
+		send["role"] = role;
+		send["info"] = text;
+		if (info["value"] == undefined) {
+			assert(info["oneAct"] != undefined && info["fullLength"] != undefined);
+			var isOneAct = $("#duration-select").text() === "One Act";
+			console.log("is one: " + isOneAct);
+			if(isOneAct)
+				send["amount"] = info["oneAct"];
+			else
+				send["amount"] = info["fullLength"];
+			send["oneAct"] = isOneAct;
+		} else {
+			if (info["rate"] == undefined) {//Simple not rate based submission
+				send["rate"] = null;
+				send["amount"] = info["value"];
+				send["rateString"] = null;
+			} else {
+				var amount = $("#value")[0].value;
+				send["rate"] = info["value"];
+				send["amount"] = amount;
+				send["rateString"] = info["rate"];
+			}
 
-		console.log("Category: " + $("#category-select").text() + " role: " + $("#role-select").text() + " text " + text);
+		}
+		console.log(JSON.stringify(send, null, 3));
 	}
 
 	function getPointsString(points, rate = undefined) {
@@ -103,7 +142,20 @@
 		return result;
 	}
 
-	function UpdateCategory() {
+	function getRoleInfo(category, role) {
+		for (var i = 0; i < roles.length; i++) {
+			if (typeof(roles[i]) === "string" && category === roles[i]) {
+				while (typeof(roles[++i]) === "object") {
+					let object = roles[i];
+					if(object["name"] === role)
+						return object;
+				}
+			}
+		}
+		return null;
+	}
+
+	function updateCategory() {
 		var categorySelect = $("#category-select");
 		var roleSelect = $("#role-select");
 		var entries = $("#role-select-entries");
@@ -132,9 +184,11 @@
 								"</div>");
 								$("#one-act").bind("click", function() {
 									$("#points-info").text(getPointsString(object["oneAct"]));
+									$("#duration-select").text("One Act");
 								});
 								$("#full-length").bind("click", function() {
 									$("#points-info").text(getPointsString(object["fullLength"]));
+									$("#duration-select").text("Full Length");
 								});
 
 							} else {//Set value
@@ -142,9 +196,9 @@
 									$("#points-info").text(getPointsString(object["value"], object["rate"]));
 									$("#value-input").show();
 									$("#value-label").text("How many " + object["rate"] + "s did you complete?");
-									console.log("showing");
 								} else {//Normal value
 									$("#points-info").text(getPointsString(object["value"]));
+									$("#value-input").hide();
 								}
 							}
 						});
@@ -154,32 +208,33 @@
 			}
 		}
 	}
+
 	function Acting() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Production() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Business() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Directing() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Writing() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Miscellaneous() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Advocacy() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Officers() {
-		UpdateCategory();
+		updateCategory();
 	}
 	function Audience() {
-		UpdateCategory();
+		updateCategory();
 	}
 
 </script>
