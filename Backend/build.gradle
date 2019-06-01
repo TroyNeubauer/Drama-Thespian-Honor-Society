@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 //create a single Jar with all dependencies
-task fatJar(type: Jar) {
+task fatJar(type:Jar) {
 	manifest {
 		attributes 'Main-Class': 'com.troy.dramaserver.Main'
 	}
@@ -18,8 +18,15 @@ task fatJar(type: Jar) {
 	with jar
 }
 
-task upload(type: Jar) {
+task upload(type:Exec) {
+	dependsOn fatJar
 
+	commandLine 'pscp', '-i', 'C:/AWS/Drama.ppk', './build/libs/Backend-all-1.0.jar', 'ubuntu@ec2-3-14-39-226.us-east-2.compute.amazonaws.com:/home/ubuntu/Server.jar' 
+	
+	doLast {
+		println standardOutput.toString()
+	}
+	
 }
 
 
