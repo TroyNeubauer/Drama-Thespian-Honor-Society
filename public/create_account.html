@@ -48,28 +48,30 @@
 	<h4 class="card-title mb-4 mt-1">Create account</h4>
 		<form>
 			<div class="form-group">
-				<label>Your username</label>
-				<input name="" class="form-control" placeholder="Username" type="text">
-			</div>
-			<div class="form-group">
 				<label>Your name</label>
-				<input name="" class="form-control" placeholder="Name" type="text">
+				<input name="" class="form-control" placeholder="Name" type="text" id="name" autocomplete="on">
 			</div>
 			<div class="form-group">
 				<label>Your email</label>
-				<input name="" class="form-control" placeholder="Email" type="email">
+				<input name="" class="form-control" placeholder="example@email.com" type="email" id="email" autocomplete="on">
 			</div>
 			<div class="form-group">
 				<a class="float-right" href="#" onclick="alert('Sorry this isn\'t implemented yet!');">Forgot?</a>
 				<label>Your password</label>
-				<input class="form-control" placeholder="******" type="password">
+				<input class="form-control" placeholder="*********" type="password" id="password">
 			</div>
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary btn-block">Create account</button>
+				<button type="submit" class="btn btn-primary btn-block" onclick="submit()">Create account</button>
 			</div>
 		</form>
 	</article>
 </div> <!-- card.// -->
+
+<script>
+	function submit() {
+		console.log($("#name")[0].value);
+	}
+</script>
 
 <!--- Two Column Section -->
 <div class="container-fluid padding">
