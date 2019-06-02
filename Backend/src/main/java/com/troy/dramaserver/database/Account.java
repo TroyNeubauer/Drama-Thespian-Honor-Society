@@ -17,7 +17,7 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public Account(String name, byte[] password, String email, byte[] salt, long userID) {
+	public Account(String email, byte[] password, String name, byte[] salt, long userID) {
 		this.name = name;
 		this.password = password;
 		this.email = email;
@@ -51,7 +51,7 @@ public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Account [name=" + name + ", email=" + email + "]";
+		return "Account [name=" + name + ", email=" + email + ", id=" + userID + "]";
 	}
 
 	public String getPicturePath() {
@@ -121,7 +121,7 @@ public class Account implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public long getUserID() {
 		return userID;
 	}

@@ -8,9 +8,11 @@ import com.troy.dramaserver.database.*;
 import com.troy.dramaserver.net.Net;
 
 public class Server {
+	
+	public static final File PUBLIC_DIR = new File("./public");
 
-	private static final File DATABASE_FILE = new File("./database.dat");
 	private static final Logger logger = LogManager.getLogger(Server.class);
+	private static final File DATABASE_FILE = new File("./database.dat");
 
 	private Database database;
 	private Net net;
@@ -22,12 +24,14 @@ public class Server {
 			Object obj = stream.readObject();
 			if (obj instanceof Database) {
 				database = (Database) obj;
+				database.initSecondList();
 				logger.info("Successfully read saved database");
 			} else {
 				throw new RuntimeException("Not database " + obj.getClass());
 			}
 		} catch (FileNotFoundException e) {
 			database = new Database();
+			database.initSecondList();
 			logger.info("Creating new database");
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -41,21 +45,19 @@ public class Server {
 				}
 			}
 		}
-		this.net = new Net();
+		this.net = new Net(this);
 	}
 
-	public String registerUser(String username, char[] password, String email) {
-		return database.registerUser(username, password, email);
+	public boolean registerUser(String email, char[] password, String name) {
+		return database.registerUser(email, password, name);
 	}
 
-	public boolean areCredentialsValid(String username, char[] password) {
-		return database.areCredentialsValid(username, password);
+	public boolean areCredentialsValid(String email, char[] password) {
+		return database.areCredentialsValid(email, password);
 	}
 
 	public void shutdown() {
 		logger.info("Preparing to shutdown the server");
-		if (net != null)
-			net.cleanUp();
 		if (database != null) {
 			try {
 				ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(DATABASE_FILE));
@@ -67,17 +69,23 @@ public class Server {
 				logger.catching(e);
 			}
 		}
-		if (net != null)
+		if (net != null) {
+			net.cleanUp();
 			net.join();
+		}
 		logger.info("server shutdown");
 	}
 
-	public boolean containsUser(String username) {
-		return getAccount(username) != null;
+	public boolean containsUser(String email) {
+		return getAccount(email) != null;
 	}
 
-	public Account getAccount(String username) {
-		return database.getUsers().get(username);
+	public Account getAccount(String email) {
+		return database.getUser(email);
+	}
+	
+	public Account getAccount(long id) {
+		return database.getUser(id);
 	}
 
 	public Database getDatabase() {

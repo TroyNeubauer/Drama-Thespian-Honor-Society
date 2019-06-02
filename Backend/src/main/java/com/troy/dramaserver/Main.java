@@ -1,26 +1,31 @@
 package com.troy.dramaserver;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 import org.apache.logging.log4j.*;
 
 public class Main {
-	
+
 	private static final Logger logger = LogManager.getLogger(Main.class);
 
+	private static Server server = null;
+
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		Server server = null;
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				if (server != null) {
+					logger.info("Initiating shutdown from shutdown hook");
+					server.shutdown();
+				}
+			}
+		});
+
 		try {
 			logger.info("Starting Server");
 			server = new Server();
 			server.getDatabase().listUsers();
-			/*
-			 * server.registerUser("Troy_Neubauer", "Furminator1".toCharArray(), "troyneubauer@gmail.com"); server.registerUser("Albert_Ding",
-			 * "IAMA'DING_DONG".toCharArray(), "ding@dong.com"); server.registerUser("Justin_Kim", "ILikeCompsci".toCharArray(), "jus@kim.com");
-			 * server.registerUser("Chas_Huang", "PenitrateYannie!".toCharArray(), "chashuang_1@gmail.com"); server.registerUser("Drew_Gautier",
-			 * "Diplo4lyfe!".toCharArray(), "drew@gmail.com");
-			 */
 
 		} catch (Throwable r) {
 			logger.fatal("Unhandled exception in main");
@@ -30,13 +35,19 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		CommandParser parser = new CommandParser(server);
 		while (true) {
-			String line = scanner.nextLine();
-			if (parser.parse(line))
-				break;
+			try {
+				String line = scanner.nextLine();
+				if (parser.parse(line))
+					break;
+			} catch (NoSuchElementException e) {// There isn't stdin
+				try {
+					Thread.sleep(100);// Wait
+				} catch (Exception e1) {
+				}
+			}
 		}
-
-		server.shutdown();
 		scanner.close();
+		server.shutdown();
+		server = null;// prevent double shutdown
 	}
-
 }

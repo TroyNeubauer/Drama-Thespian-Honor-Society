@@ -5,7 +5,7 @@ import org.apache.logging.log4j.*;
 import com.troy.dramaserver.database.Account;
 
 public class CommandParser {
-	
+
 	private static final Logger logger = LogManager.getLogger(CommandParser.class);
 
 	private Server server;
@@ -35,13 +35,13 @@ public class CommandParser {
 			}
 			if (commands[0].equalsIgnoreCase("delete") || commands[0].equalsIgnoreCase("remove")) {
 				if (commands[1].equalsIgnoreCase("user")) {
-					String username = commands[2];
-					if (server.containsUser(username)) {
-						Account acc = server.getDatabase().getUsers().remove(username);
+					String email = commands[2];
+					if (server.containsUser(email)) {
+						Account acc = server.getDatabase().removeUser(email);
 						if (acc != null)
-							System.out.println("Succscfully removed user \"" + username + "\"");
+							System.out.println("Succscfully removed user \"" + email + "\"");
 					} else {
-						System.out.println("Unknown user \"" + username + "\"");
+						System.out.println("Unknown user \"" + email + "\"");
 					}
 
 				}
@@ -59,7 +59,7 @@ public class CommandParser {
 		} catch (Exception e) {
 			System.out.println("Unknown command \"" + line + "\"");
 			logger.catching(e);
-			
+
 		}
 		return false;
 	}
