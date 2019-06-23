@@ -2,8 +2,9 @@ package com.troy.dramaserver.net;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 import org.apache.logging.log4j.*;
@@ -73,9 +74,9 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 			if (handler.getMethod() == HttpMethod.GET) {
 				pairs = getPairs(fullUrl);// Use the url for parameters
 			} else {
-				byte[] bytes = new byte[request.content().writerIndex()];// Use the content otherwise
-				request.content().readBytes(bytes);
-				pairs = getPairs(new String(bytes));
+				String body = request.content().toString(Charset.forName("ASCII"));
+				pairs = new MultiPartStringParser(body).getParameters();
+
 			}
 			handler.handle(ctx, request, pairs);
 		} else if (request.method() == HttpMethod.GET) {

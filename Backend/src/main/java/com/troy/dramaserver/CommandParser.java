@@ -1,8 +1,10 @@
 package com.troy.dramaserver;
 
+import java.util.*;
+
 import org.apache.logging.log4j.*;
 
-import com.troy.dramaserver.database.Account;
+import com.troy.dramaserver.database.*;
 
 public class CommandParser {
 
@@ -53,6 +55,34 @@ public class CommandParser {
 						System.out.println(server.getAccount(username));
 					} else {
 						System.out.println("Unknown user \"" + username + "\"");
+					}
+				} else if (commands[1].equalsIgnoreCase("session")) {
+					String session = commands[2];
+					SessionData data = server.getDatabase().getSession(Base64.getDecoder().decode(session));
+					if (data == null)
+						System.out.println("No session found");
+					else
+						System.out.println(data);
+				} else if (commands[1].equalsIgnoreCase("sessions")) {
+					if (commands.length > 2) {
+						int count = Integer.parseInt(commands[2]);
+						System.out.println("Showing the " + count + " most recent sessions:");
+						List<SessionData> sessions = server.getDatabase().getRecentSessions(count);
+						for (SessionData session : sessions) {
+							System.out.println('\t' + session.toString());
+						}
+					} else {
+						List<SessionData> sessions = server.getDatabase().getAllSessions();
+						System.out.println("All sessions ever created: (" + sessions.size() + ")");
+						for (SessionData session : sessions) {
+							System.out.println('\t' + session.toString());
+						}
+					}
+				} else if (commands[1].equalsIgnoreCase("valid-sessions")) {
+					List<SessionData> sessions = server.getDatabase().getAllValidSessions();
+					System.out.println("All valid sessions: (" + sessions.size() + ")");
+					for (SessionData session : sessions) {
+						System.out.println('\t' + session.toString());
 					}
 				}
 			}

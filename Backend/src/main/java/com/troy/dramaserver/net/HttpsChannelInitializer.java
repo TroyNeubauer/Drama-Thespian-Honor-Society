@@ -23,7 +23,6 @@ public class HttpsChannelInitializer extends ChannelInitializer<SocketChannel> {
 			socketChannel.pipeline().addLast(new HttpServerCodec());
 			socketChannel.pipeline().addLast(new HttpObjectAggregator(1048576));
 			socketChannel.pipeline().addLast(new HttpRequestHandler());
-			
 		} catch (SSLException e) {
 			throw new RuntimeException(e);
 		}

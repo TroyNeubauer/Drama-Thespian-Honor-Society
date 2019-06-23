@@ -3,12 +3,15 @@ package com.troy.dramaserver.net;
 import static io.netty.handler.codec.http.HttpHeaderNames.*;
 
 import java.io.*;
+import java.util.*;
 
 import org.apache.commons.io.FilenameUtils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.cookie.Cookie;
+import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.util.AsciiString;
 
 public class HttpResponceBuilder {
@@ -26,6 +29,8 @@ public class HttpResponceBuilder {
 	private DefaultFullHttpResponse response;
 	private HttpHeaders headers;
 	private ByteBuf contentBuf;
+
+	private List<Cookie> cookies = new ArrayList<Cookie>();
 
 	public HttpResponceBuilder(ChannelHandlerContext ctx, FullHttpRequest request) {
 		this.ctx = ctx;
@@ -93,7 +98,6 @@ public class HttpResponceBuilder {
 
 	private HttpResponceBuilder JSONContent(String content) {
 		setContentImpl(content);
-		System.out.println("Setting content: " + content);
 		headers.set(CONTENT_TYPE, JSON);
 		return this;
 	}
@@ -126,6 +130,7 @@ public class HttpResponceBuilder {
 	}
 
 	void send() {
+		headers.set(SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookies));
 		if (HttpUtil.isKeepAlive(request)) {
 			ctx.write(response, ctx.voidPromise());
 		} else {
@@ -157,5 +162,10 @@ public class HttpResponceBuilder {
 		default:
 			return PLAIN_TEXT;
 		}
+	}
+
+	public HttpResponceBuilder cookie(Cookie cookie) {
+		cookies.add(cookie);
+		return this;
 	}
 }

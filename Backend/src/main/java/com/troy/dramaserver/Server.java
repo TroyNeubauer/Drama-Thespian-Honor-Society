@@ -1,6 +1,7 @@
 package com.troy.dramaserver;
 
 import java.io.*;
+import java.security.SecureRandom;
 
 import org.apache.logging.log4j.*;
 
@@ -8,7 +9,7 @@ import com.troy.dramaserver.database.*;
 import com.troy.dramaserver.net.Net;
 
 public class Server {
-	
+
 	public static final File PUBLIC_DIR = new File("./public");
 
 	private static final Logger logger = LogManager.getLogger(Server.class);
@@ -83,13 +84,25 @@ public class Server {
 	public Account getAccount(String email) {
 		return database.getUser(email);
 	}
-	
+
 	public Account getAccount(long id) {
 		return database.getUser(id);
 	}
 
 	public Database getDatabase() {
 		return database;
+	}
+
+	public SecureRandom getRandom() {
+		return database.getRandom();
+	}
+
+	public void addSession(byte[] value, long userID) {
+		database.addSession(value, userID);
+	}
+
+	public boolean hasSession(byte[] session) {
+		return database.hasSession(session);
 	}
 
 }

@@ -9,7 +9,7 @@ public class Main {
 
 	private static final Logger logger = LogManager.getLogger(Main.class);
 
-	private static Server server = null;
+	public static Server server = null;
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Runtime.getRuntime().addShutdownHook(new Thread() {

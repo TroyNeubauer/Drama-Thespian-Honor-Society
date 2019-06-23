@@ -28,18 +28,6 @@ task uploadServer(type:Exec) {
 }
 
 
-task uploadWebsite(type:Exec) {
-	commandLine 'pscp', '-i', 'C:/AWS/Drama.ppk', '-r', '../public', 'ubuntu@ec2-3-14-39-226.us-east-2.compute.amazonaws.com:/home/ubuntu'
-	doLast {
-		println standardOutput.toString()
-	}
-}
-
-task uploadAll() {
-	dependsOn uploadServer
-	dependsOn uploadWebsite
-}
-
 dependencies {
 	compile group: 'org.msgpack', name: 'msgpack', version: '0.6.12'
 	compile "io.netty:netty-all:4.1.6.Final"
@@ -48,6 +36,10 @@ dependencies {
 	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 	compile group: 'io.netty', name: 'netty-all', version: '4.1.36.Final'
+	compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
+	compile group: 'joda-time', name: 'joda-time', version: '2.10.2'
 }
 
