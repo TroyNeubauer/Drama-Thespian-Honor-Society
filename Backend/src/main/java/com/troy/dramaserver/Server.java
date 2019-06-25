@@ -105,4 +105,9 @@ public class Server {
 		return database.hasSession(session);
 	}
 
+	public Account getSession(byte[] session) {
+		SessionData data = database.getSession(session);
+		return (data == null) ? null : database.getUser(data.getId());
+	}
+
 }

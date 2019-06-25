@@ -1,0 +1,19 @@
+{
+  "logger": {
+    "title": "Remote Sync"
+  },
+  "uploadOnSave": false,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "ec2-3-14-39-226.us-east-2.compute.amazonaws.com",
+  "port": "22",
+  "target": "/home/ubuntu/public",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "ubuntu",
+  "keyfile": "C:\\AWS\\Drama.ppk",
+  "watch": [],
+  "transport": "scp"
+}

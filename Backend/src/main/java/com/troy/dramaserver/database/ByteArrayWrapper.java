@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class ByteArrayWrapper implements Serializable {
+
 	private byte[] array;
 
 	public ByteArrayWrapper(byte[] array) {

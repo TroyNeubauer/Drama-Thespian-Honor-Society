@@ -99,7 +99,7 @@ public class PointEntry implements Serializable {
 			if (rate == 0.0)
 				return amount;
 			else
-				return rate * (double) amount;
+				return rate * amount;
 		}
 
 		@Override

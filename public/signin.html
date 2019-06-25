@@ -47,15 +47,15 @@
 	<article class="card-body">
 	<a href="create_account.html" class="float-right btn btn-outline-primary">Create Acount</a>
 	<h4 class="card-title mb-4 mt-1">Sign in</h4>
-		<form>
+		<form id="form">
 			<div class="form-group">
 				<label>Your email</label>
-				<input name="" class="form-control" placeholder="Email" type="email">
+				<input class="form-control" placeholder="example@email.com" type="email" autocomplete="on" id="email">
 			</div> <!-- form-group// -->
 			<div class="form-group">
 				<a class="float-right" href="#" onclick="alert('Sorry this isn\'t implemented yet!');">Forgot?</a>
 				<label>Your password</label>
-				<input class="form-control" placeholder="******" type="password">
+				<input class="form-control" placeholder="******" type="password" autocomplete="on" id="password">
 			</div> <!-- form-group// -->
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
@@ -63,6 +63,46 @@
 		</form>
 	</article>
 </div> <!-- card.// -->
+
+<script>
+	function onSubmit(e) {
+		if (e.preventDefault) e.preventDefault();
+		var email1 = $("#email").val();
+		var password1 = $("#password").val();
+
+		if(email1 === "" || password1 === "") {
+
+			alert("Please Fill All Fields");
+		} else {
+			var data = new FormData();
+			data.append("password", password1);
+			data.append("email", email1);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "__sign_in", true);
+			xhr.onload = function () {
+				try {
+					result = JSON.parse(xhr.response);
+					if (result["success"]) {
+						window.location = "/dashboard.html";
+					} else {
+						alert("Invalid username or password");
+					}
+				} catch(e) {
+					alert("bad JSON: " + e + " report this to the owner!");
+				}
+			};
+			xhr.send(data);
+			return false;
+		}
+	}
+	var form = document.getElementById('form');
+	if (form.attachEvent) {
+		form.attachEvent("submit", onSubmit);
+	} else {
+		form.addEventListener("submit", onSubmit);
+	}
+</script>
 
 <!--- Two Column Section -->
 <div class="container-fluid padding">

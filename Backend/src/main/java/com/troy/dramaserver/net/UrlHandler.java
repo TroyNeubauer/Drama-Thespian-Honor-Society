@@ -25,7 +25,7 @@ public abstract class UrlHandler {
 	public void handle(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 		for (String param : paramaters) {
 			if (!pairs.containsKey(param)) {
-				Http.respond(ctx, request).content("Bad request, missing parameter: \"" + param + "\" body: " + request.content().toString(Charset.forName("ASCII")))
+				Http.respond(ctx, request).content("Bad request, missing parameter: \"" + param + "\". Request body: \"" + request.content().toString(Charset.forName("ASCII")) + "\"")
 						.status(HttpResponseStatus.BAD_REQUEST).send();
 				logger.info("Bad resuest specified: " + pairs + " needed: " + param);
 				return;

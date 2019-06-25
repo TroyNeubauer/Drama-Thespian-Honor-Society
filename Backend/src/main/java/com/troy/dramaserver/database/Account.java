@@ -51,7 +51,10 @@ public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Account [name=" + name + ", email=" + email + ", id=" + userID + "]";
+		return "Account [userID=" + userID + ", name=" + name + ", email=" + email + "]\n[ picturePath=" + picturePath
+				+ ", indunctionDate=" + indunctionDate + ", admin=" + admin + ", gradYear=" + gradYear + ", studentID="
+				+ studentID + ", phoneNumber=" + phoneNumber + ", cellPhoneNumber=" + cellPhoneNumber + ", address="
+				+ address + "]";
 	}
 
 	public String getPicturePath() {

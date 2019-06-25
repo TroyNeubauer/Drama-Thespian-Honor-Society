@@ -37,16 +37,14 @@
 				</li>
 			</ul>
 		</div>
-
 	</div>
-
 </nav>
 
 <div id="create_account" class="card padding center-text">
 	<article class="card-body">
 	<a href="signin.html" class="float-right btn btn-outline-primary">Sign in</a>
 	<h4 class="card-title mb-4 mt-1">Create account</h4>
-		<form>
+		<form id="form">
 			<div class="form-group">
 				<label>Your name</label>
 				<input name="" class="form-control" placeholder="Name" type="text" id="name" autocomplete="on">
@@ -57,19 +55,55 @@
 			</div>
 			<div class="form-group">
 				<a class="float-right" href="#" onclick="alert('Sorry this isn\'t implemented yet!');">Forgot?</a>
-				<label>Your password</label>
-				<input class="form-control" placeholder="*********" type="password" id="password">
+				<label type="current-password">Your password</label>
+				<input class="form-control" placeholder="*********" type="password" id="password" autocomplete="on">
 			</div>
-			<div class="form-group">
-				<button type="submit" class="btn btn-primary btn-block" onclick="submit()">Create account</button>
+			<div class="form-group" id="submit">
+				<button type="submit" class="btn btn-primary btn-block">Create account</button>
 			</div>
 		</form>
 	</article>
 </div> <!-- card.// -->
 
 <script>
-	function submit() {
-		console.log($("#name")[0].value);
+	function onSubmit(e) {
+		if (e.preventDefault) e.preventDefault();
+        var name1 = $("#name").val();
+        var email1 = $("#email").val();
+        var password1 = $("#password").val();
+
+        if(name1 === "" || email1 === "" || password1 === "") {
+
+            alert("Please Fill All Fields");
+        } else {
+			var data = new FormData();
+			data.append("name", name1);
+			data.append("password", password1);
+			data.append("email", email1);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "__create_account", true);
+			xhr.onload = function () {
+				try {
+					result = JSON.parse(xhr.response);
+					if (result["success"]) {
+						window.location = "/dashboard.html";
+					} else {
+						alert("Failed to create account. This email is already in use");
+					}
+				} catch(e) {
+					alert("bad JSON: " + e + " report this to the owner!");
+				}
+			};
+			xhr.send(data);
+			return false;
+        }
+	}
+	var form = document.getElementById('form');
+	if (form.attachEvent) {
+		form.attachEvent("submit", onSubmit);
+	} else {
+		form.addEventListener("submit", onSubmit);
 	}
 </script>
 
@@ -79,7 +113,7 @@
 		<div class="col-lg-6">
 			<h2>We take security seriously</h2>
 			<p>Luclky, because I made the backend I can tell you all about how it works!</p>
-			<p>This website make use of all the latest computer secutiry features that we learn about in the <a href="http://www.oakcsclub.win">OHS Computer Science Club</a>. Most importantly, iterative hashing. Rather than storing your password in so called "plain text" we store <a href="https://en.wikipedia.org/wiki/Hash_function#Standard_uses_of_hashing_in_cryptography">hashed</a> versions of your password. This means that even if a hacker hacked our database, strong passwords would take years to break. Furthermore, our database is complex enough to not fall victim to SQL injection or cross site scripting attacks.</p>
+			<p>This website make use of all the latest computer secutiry features that we learn about in the <a href="http://www.oakcsclub.win" target="_blank">OHS Computer Science Club</a>. Most importantly, iterative hashing. Rather than storing your password in so called "plain text" we store <a href="https://en.wikipedia.org/wiki/Hash_function#Standard_uses_of_hashing_in_cryptography" target="_blank">hashed</a> versions of your password. This means that even if a hacker hacked our database, strong passwords would take years to break. Furthermore, our database is complex enough to not fall victim to SQL injection or cross site scripting attacks.</p>
 
 
 		</div>

@@ -49,7 +49,8 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		if (pair.contains("=")) {
 			int index = pair.indexOf("=");
 			try {
-				map.put(URLDecoder.decode(pair.substring(0, index), UTF_8), URLDecoder.decode(pair.substring(index + 1), UTF_8));
+				map.put(URLDecoder.decode(pair.substring(0, index), UTF_8),
+						URLDecoder.decode(pair.substring(index + 1), UTF_8));
 			} catch (UnsupportedEncodingException e) {
 				return;// Don't add any malformed parts
 			}
@@ -63,7 +64,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 			url = url.substring(1);
 		if (url.isEmpty())
 			url = "index.html";
-		url.replaceAll("../", "");// No relative pathing up to the server=
+		url.replaceAll("../", "");// No relative pathing up to the server
 		String fullUrl = url;
 		if (url.contains("?"))
 			url = url.substring(0, url.indexOf("?"));
@@ -75,7 +76,13 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 				pairs = getPairs(fullUrl);// Use the url for parameters
 			} else {
 				String body = request.content().toString(Charset.forName("ASCII"));
-				pairs = new MultiPartStringParser(body).getParameters();
+				try {
+					pairs = new MultiPartStringParser(body).getParameters();
+				} catch (Exception e) {
+					pairs = new HashMap<String, String>();
+					//logger.warn("Failed to parse pars for GET request " + url);
+					//logger.catching(e);
+				}
 
 			}
 			handler.handle(ctx, request, pairs);

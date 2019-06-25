@@ -1,9 +1,11 @@
 package com.troy.dramaserver;
 
-import java.io.*;
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
 
@@ -11,7 +13,7 @@ public class Main {
 
 	public static Server server = null;
 
-	public static void main(String[] args) throws FileNotFoundException, IOException {
+	public static void main(String[] args) {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
