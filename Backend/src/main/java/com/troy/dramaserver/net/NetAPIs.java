@@ -1,24 +1,19 @@
 package com.troy.dramaserver.net;
 
-import static com.troy.dramaserver.net.HttpRequestHandler.addHandler;
+import static com.troy.dramaserver.net.HttpRequestHandler.*;
 
-import java.time.LocalDate;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.joda.time.Duration;
+import org.apache.logging.log4j.*;
+import org.joda.time.*;
+import org.joda.time.format.*;
 
 import com.troy.dramaserver.Server;
 import com.troy.dramaserver.database.Account;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
@@ -34,8 +29,7 @@ public class NetAPIs {
 	public static void init(final Server server) {
 		addHandler("__create_account", new UrlHandler(HttpMethod.POST, "email", "name", "password") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs)
-					throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 				String email = pairs.get("email"), name = pairs.get("name");
 				char[] password = pairs.get("password").toCharArray();
 				pairs.put("password", null);// Hope GC cleans up the string fast
@@ -50,8 +44,7 @@ public class NetAPIs {
 
 		addHandler("__sign_in", new UrlHandler(HttpMethod.POST, "email", "password") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs)
-					throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 				String email = pairs.get("email");
 				char[] password = pairs.get("password").toCharArray();
 				pairs.put("password", null);// Hope GC cleans up the string fast
@@ -66,8 +59,7 @@ public class NetAPIs {
 
 		addHandler("__add", new UrlHandler(HttpMethod.POST, "value") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs)
-					throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 				if (hasSessionCookie(server, request)) {
 					Http.respond(ctx, request).JSONContent("success", true).send();
 
@@ -76,40 +68,84 @@ public class NetAPIs {
 			}
 		});
 
-		requireLogin(server, "add.html");
-		requireLogin(server, "dashboard.html");
-
-		/*private LocalDate indunctionDate;
-		private boolean admin;
-		private int gradYear, studentID, phoneNumber, cellPhoneNumber;
-		private String address;*/
-
-		addHandler("__set_picture_path", new UrlHandler(HttpMethod.POST, "picturePath") {
+		addHandler("__get_my_id", new UrlHandler(HttpMethod.GET) {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs)
-					throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 				if (hasSessionCookie(server, request)) {
-					Account account = getSessionAccount(server, request);
-					if (account == null) {
-						Http.respond(ctx, request).JSONContent("success", false).send();
-					} else {
-						String path = pairs.get("email");
-						// TODO verify path
-						account.setPicturePath(path);
-						logger.info("Updated picture path for user: " + account);
-						Http.respond(ctx, request).JSONContent("success", true).send();
-					}
-
+					Http.respond(ctx, request).JSONContent("id", getSessionAccount(server, request).getUserID()).send();
 				} else
 					Http.respond(ctx, request).redirect("/signin.html").send();
 			}
 		});
 
+		requireLogin(server, "add.html");
+		requireLogin(server, "dashboard.html");
+
+		addAccountInfoHandler(server, "__set_indunction_date", "indunctionDate");
+		addAccountInfoHandler(server, "__set_picture_path", "picturePath");
+		addAccountInfoHandler(server, "__set_grad_year", "gradYear");
+		addAccountInfoHandler(server, "__set_student_id", "studentID");
+		addAccountInfoHandler(server, "__set_phone_number", "phoneNumber");
+		addAccountInfoHandler(server, "__set_cell_phone_number", "cellPhoneNumber");
+		addAccountInfoHandler(server, "__set_address", "address");
+
 		addHandler("__check_email", new UrlHandler(HttpMethod.GET, "email") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs)
-					throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 				Http.respond(ctx, request).JSONContent("has_user", server.containsUser(pairs.get("email"))).send();
+			}
+		});
+	}
+
+	private static void addAccountInfoHandler(Server server, String url, String variableName) {
+		final Field field;
+		try {
+			field = Account.class.getDeclaredField(variableName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			logger.warn("Unable to find field \"" + variableName + "\" in class Account");
+			logger.catching(e);
+			return;
+		}
+		try {
+			field.setAccessible(true);
+		} catch (SecurityException e) {
+			logger.warn("Unable to make field \"" + variableName + "\" accesible");
+			logger.catching(e);
+			return;
+		}
+		addHandler(url, new UrlHandler(HttpMethod.POST, "newValue") {
+			@Override
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
+				if (hasSessionCookie(server, request)) {
+					Account account = getSessionAccount(server, request);
+					if (account == null) {
+						Http.respond(ctx, request).JSONContent("success", false).send();
+					} else {
+						String value = pairs.get("newValue");
+						Class<?> type = field.getType();
+						try {
+							if (type == int.class || type == Integer.class) {
+								field.setInt(account, Integer.parseInt(value));
+							} else if (type == long.class || type == Long.class) {
+								field.setLong(account, Long.parseLong(value));
+							} else if (type == String.class) {
+								field.set(account, value);
+							} else if (type == LocalDate.class) {
+								field.set(account, ISODateTimeFormat.basicDate().parseLocalDate(value));
+							}
+
+							logger.info("Updated field " + field + " for user: " + account);
+							Http.respond(ctx, request).JSONContent("success", true).send();
+						} catch (Exception e) {
+							logger.info("Failed to set field " + field + " for user: " + account);
+							logger.catching(e);
+							Http.respond(ctx, request).JSONContent("success", false).send();
+							return;
+						}
+					}
+
+				} else
+					Http.respond(ctx, request).redirect("/signin.html").send();
 			}
 		});
 	}
@@ -117,8 +153,7 @@ public class NetAPIs {
 	private static void requireLogin(final Server server, String url) {
 		addHandler(url, new UrlHandler(HttpMethod.GET) {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs)
-					throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
 				if (hasSessionCookie(server, request))
 					Http.respond(ctx, request).content(Server.PUBLIC_DIR, url).send();
 				else

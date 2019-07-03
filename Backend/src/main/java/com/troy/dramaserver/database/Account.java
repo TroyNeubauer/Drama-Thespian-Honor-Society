@@ -1,7 +1,8 @@
 package com.troy.dramaserver.database;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
+import org.joda.time.LocalDate;
 
 public class Account implements Serializable {
 
@@ -41,10 +42,6 @@ public class Account implements Serializable {
 		return password;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public void setPassword(byte[] password) {
 		this.password = password;
 	}
@@ -61,16 +58,8 @@ public class Account implements Serializable {
 		return picturePath;
 	}
 
-	public void setPicturePath(String picturePath) {
-		this.picturePath = picturePath;
-	}
-
 	public LocalDate getIndunctionDate() {
 		return indunctionDate;
-	}
-
-	public void setIndunctionDate(LocalDate indunctionDate) {
-		this.indunctionDate = indunctionDate;
 	}
 
 	public boolean isAdmin() {
@@ -85,44 +74,20 @@ public class Account implements Serializable {
 		return gradYear;
 	}
 
-	public void setGradYear(int gradYear) {
-		this.gradYear = gradYear;
-	}
-
 	public int getStudentID() {
 		return studentID;
-	}
-
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
 	}
 
 	public int getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
 	public int getCellPhoneNumber() {
 		return cellPhoneNumber;
 	}
 
-	public void setCellPhoneNumber(int cellPhoneNumber) {
-		this.cellPhoneNumber = cellPhoneNumber;
-	}
-
 	public String getAddress() {
 		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public long getUserID() {

@@ -130,7 +130,8 @@ public class HttpResponceBuilder {
 	}
 
 	void send() {
-		headers.set(SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookies));
+		if (cookies.size() > 0)
+			headers.set(SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookies));
 		if (HttpUtil.isKeepAlive(request)) {
 			ctx.write(response, ctx.voidPromise());
 		} else {

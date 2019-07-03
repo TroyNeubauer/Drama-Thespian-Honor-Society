@@ -49,8 +49,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		if (pair.contains("=")) {
 			int index = pair.indexOf("=");
 			try {
-				map.put(URLDecoder.decode(pair.substring(0, index), UTF_8),
-						URLDecoder.decode(pair.substring(index + 1), UTF_8));
+				map.put(URLDecoder.decode(pair.substring(0, index), UTF_8), URLDecoder.decode(pair.substring(index + 1), UTF_8));
 			} catch (UnsupportedEncodingException e) {
 				return;// Don't add any malformed parts
 			}
@@ -71,6 +70,10 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
 		if (handlers.containsKey(url)) {
 			UrlHandler handler = handlers.get(url);
+			if (handler.getMethod() != request.method()) {
+				logger.info("Request type mismatch for url: " + url + " expected " + handler.getMethod() + " but got " + request.method());
+				return;
+			}
 			HashMap<String, String> pairs;
 			if (handler.getMethod() == HttpMethod.GET) {
 				pairs = getPairs(fullUrl);// Use the url for parameters
@@ -80,8 +83,8 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 					pairs = new MultiPartStringParser(body).getParameters();
 				} catch (Exception e) {
 					pairs = new HashMap<String, String>();
-					//logger.warn("Failed to parse pars for GET request " + url);
-					//logger.catching(e);
+					// logger.warn("Failed to parse pars for GET request " + url);
+					// logger.catching(e);
 				}
 
 			}
