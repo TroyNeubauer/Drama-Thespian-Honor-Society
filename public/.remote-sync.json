@@ -2,7 +2,7 @@
   "logger": {
     "title": "Remote Sync"
   },
-  "uploadOnSave": false,
+  "uploadOnSave": true,
   "useAtomicWrites": false,
   "deleteLocal": false,
   "hostname": "ec2-3-14-39-226.us-east-2.compute.amazonaws.com",

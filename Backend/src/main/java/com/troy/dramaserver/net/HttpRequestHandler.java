@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.apache.logging.log4j.*;
 
+import com.google.gson.JsonObject;
 import com.troy.dramaserver.Server;
 
 import io.netty.channel.*;
@@ -26,8 +27,8 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		handlers.put(url, handler);
 	}
 
-	private static HashMap<String, String> getPairs(String url) {
-		HashMap<String, String> pairs = new HashMap<>();
+	private static JsonObject getPairs(String url) {
+		JsonObject pairs = new JsonObject();
 		String pairsString;
 		if (url.contains("?")) {
 			int index = url.indexOf('?');
@@ -45,11 +46,11 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		return pairs;
 	}
 
-	private static void addPair(HashMap<String, String> map, String pair) {
+	private static void addPair(JsonObject obj, String pair) {
 		if (pair.contains("=")) {
 			int index = pair.indexOf("=");
 			try {
-				map.put(URLDecoder.decode(pair.substring(0, index), UTF_8), URLDecoder.decode(pair.substring(index + 1), UTF_8));
+				obj.addProperty(URLDecoder.decode(pair.substring(0, index), UTF_8), URLDecoder.decode(pair.substring(index + 1), UTF_8));
 			} catch (UnsupportedEncodingException e) {
 				return;// Don't add any malformed parts
 			}
@@ -71,24 +72,24 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		if (handlers.containsKey(url)) {
 			UrlHandler handler = handlers.get(url);
 			if (handler.getMethod() != request.method()) {
-				logger.info("Request type mismatch for url: " + url + " expected " + handler.getMethod() + " but got " + request.method());
+				logger.warn("Request type mismatch for url: " + url + " expected " + handler.getMethod() + " but got " + request.method());
 				return;
 			}
-			HashMap<String, String> pairs;
+			JsonObject data;
 			if (handler.getMethod() == HttpMethod.GET) {
-				pairs = getPairs(fullUrl);// Use the url for parameters
+				data = getPairs(fullUrl);// Use the url for parameters
 			} else {
 				String body = request.content().toString(Charset.forName("ASCII"));
 				try {
-					pairs = new MultiPartStringParser(body).getParameters();
+					data = MultiPartStringParser.parse(body);
 				} catch (Exception e) {
-					pairs = new HashMap<String, String>();
-					// logger.warn("Failed to parse pars for GET request " + url);
-					// logger.catching(e);
+					data = new JsonObject();
+					logger.warn("Failed to parse pars for GET request " + url);
+					logger.catching(e);
 				}
 
 			}
-			handler.handle(ctx, request, pairs);
+			handler.handle(ctx, request, data);
 		} else if (request.method() == HttpMethod.GET) {
 			Http.respond(ctx, request).content(Server.PUBLIC_DIR, url).send();
 		} else {

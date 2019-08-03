@@ -216,5 +216,13 @@ public class Database implements Serializable {
 		// i.e. (a.length == b.length)
 		return 0; // "a = b", same length, all items equal
 	}
+	
+	public ArrayList<PointEntry> getWaitingPoints() {
+		return waitingPoints;
+	}
+	
+	public ArrayList<PointEntry> getApprovedPoints() {
+		return approvedPoints;
+	}
 
 }

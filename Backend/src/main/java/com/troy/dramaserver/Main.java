@@ -17,10 +17,8 @@ public class Main {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				if (server != null) {
-					logger.info("Initiating shutdown from shutdown hook");
-					server.shutdown();
-				}
+				logger.info("Initiating shutdown from shutdown hook");
+				server.shutdown();
 			}
 		});
 
@@ -50,6 +48,5 @@ public class Main {
 		}
 		scanner.close();
 		server.shutdown();
-		server = null;// prevent double shutdown
 	}
 }

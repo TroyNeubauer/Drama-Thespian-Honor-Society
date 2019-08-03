@@ -99,6 +99,8 @@
 		//Submit everything to server
 		console.log("Category: " + category + " role: " + role + " text " + text);
 		var info = getRoleInfo(category, role);
+		if (info == null)
+			return;
 		var send = {};
 		send["category"] = category;
 		send["role"] = role;
@@ -114,9 +116,7 @@
 			send["oneAct"] = isOneAct;
 		} else {
 			if (info["rate"] == undefined) {//Simple not rate based submission
-				send["rate"] = null;
 				send["amount"] = info["value"];
-				send["rateString"] = null;
 			} else {
 				var amount = $("#value")[0].value;
 				send["rate"] = info["value"];
@@ -125,7 +125,21 @@
 			}
 
 		}
-		console.log(JSON.stringify(send, null, 3));
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "__add");
+		xhr.onload = function () {
+			try {
+				result = JSON.parse(xhr.response);
+				if (result["success"]) {
+					alert("Success");
+				} else {
+					alert("Failed to create account. This email is already in use");
+				}
+			} catch(e) {
+				alert("bad JSON: " + e + " report this to the owner!");
+			}
+		};
+		xhr.send(JSON.stringify({value: send}));
 	}
 
 	function getPointsString(points, rate = undefined) {

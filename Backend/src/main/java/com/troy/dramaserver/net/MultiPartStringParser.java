@@ -5,48 +5,65 @@ import java.util.*;
 
 import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.logging.log4j.*;
+
+import com.google.gson.*;
 
 public class MultiPartStringParser implements org.apache.commons.fileupload.UploadContext {
 
+	private static final Logger logger = LogManager.getLogger(MultiPartStringParser.class);
+
 	private String postBody;
 	private String boundary;
-	private HashMap<String, String> parameters = new HashMap<String, String>();
 
-	public MultiPartStringParser(String postBody) throws Exception {
+	public MultiPartStringParser(String postBody, String boundary) {
+		super();
 		this.postBody = postBody;
-		// Sniff out the multpart boundary.
-		this.boundary = postBody.substring(2, postBody.indexOf('\n')).trim();
-		// Parse out the parameters.
-		final FileItemFactory factory = new DiskFileItemFactory();
-		FileUpload upload = new FileUpload(factory);
-		List<FileItem> fileItems = upload.parseRequest(this);
-		for (FileItem fileItem : fileItems) {
-			if (fileItem.isFormField()) {
-				parameters.put(fileItem.getFieldName(), fileItem.getString());
-			} // else it is an uploaded file
+		this.boundary = boundary;
+	}
+
+	public static JsonObject parse(String postBody) throws Exception {
+		if (postBody.isEmpty())
+			return null;
+		if (postBody.charAt(0) == '{') {// Json
+			JsonElement element = new JsonParser().parse(postBody);
+			if (element.isJsonObject())
+				return element.getAsJsonObject();
+			if (element.isJsonNull())
+				return new JsonObject();
+			logger.warn("Root Json element is not an object! " + element.getClass() + " | " + element.toString());
+			return new JsonObject();
+		} else {// Normal thing
+
+			// Sniff out the multpart boundary.
+			String boundary = postBody.substring(2, postBody.indexOf('\n')).trim();
+			JsonObject parameters = new JsonObject();
+			// Parse out the parameters.
+			final FileItemFactory factory = new DiskFileItemFactory();
+			FileUpload upload = new FileUpload(factory);
+			List<FileItem> fileItems = upload.parseRequest(new MultiPartStringParser(postBody, boundary));
+			for (FileItem fileItem : fileItems) {
+				if (fileItem.isFormField()) {
+					parameters.addProperty(fileItem.getFieldName(), fileItem.getString());
+				} // else it is an uploaded file
+			}
+
+			return parameters;
 		}
 	}
 
-	public HashMap<String, String> getParameters() {
-		return parameters;
-	}
-
-	// The methods below here are to implement the UploadContext interface.
 	@Override
 	public String getCharacterEncoding() {
-		return "UTF-8"; // You should know the actual encoding.
+		return "UTF-8";
 	}
 
-	// This is the deprecated method from RequestContext that unnecessarily
-	// limits the length of the content to ~2GB by returning an int.
 	@Override
 	public int getContentLength() {
-		return -1; // Don't use this
+		return postBody.length();
 	}
 
 	@Override
 	public String getContentType() {
-		// Use the boundary that was sniffed out above.
 		return "multipart/form-data, boundary=" + this.boundary;
 	}
 

@@ -9,8 +9,9 @@ import org.apache.logging.log4j.*;
 import org.joda.time.*;
 import org.joda.time.format.*;
 
+import com.google.gson.JsonObject;
 import com.troy.dramaserver.Server;
-import com.troy.dramaserver.database.Account;
+import com.troy.dramaserver.database.*;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
@@ -20,7 +21,7 @@ import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 
 public class NetAPIs {
 
-	public static final Duration MAX_SESSION_COOKIE_AGE = Duration.standardMinutes(2);
+	public static final Duration MAX_SESSION_COOKIE_AGE = Duration.standardDays(10);
 	private static final String SESSION_COOKIE_NAME = "session";
 	private static final int SESSION_COOKIE_LENGTH = 16;
 
@@ -29,10 +30,9 @@ public class NetAPIs {
 	public static void init(final Server server) {
 		addHandler("__create_account", new UrlHandler(HttpMethod.POST, "email", "name", "password") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
-				String email = pairs.get("email"), name = pairs.get("name");
-				char[] password = pairs.get("password").toCharArray();
-				pairs.put("password", null);// Hope GC cleans up the string fast
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				String email = data.getAsJsonPrimitive("email").getAsString(), name = data.getAsJsonPrimitive("name").getAsString();
+				char[] password = data.getAsJsonPrimitive("password").getAsString().toCharArray();
 				boolean success = server.registerUser(email, password, name);
 
 				HttpResponceBuilder builder = Http.respond(ctx, request).JSONContent("success", success);
@@ -44,10 +44,9 @@ public class NetAPIs {
 
 		addHandler("__sign_in", new UrlHandler(HttpMethod.POST, "email", "password") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
-				String email = pairs.get("email");
-				char[] password = pairs.get("password").toCharArray();
-				pairs.put("password", null);// Hope GC cleans up the string fast
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				String email = data.getAsJsonPrimitive("email").getAsString();
+				char[] password = data.getAsJsonPrimitive("password").getAsString().toCharArray();
 				boolean success = server.areCredentialsValid(email, password);
 				HttpResponceBuilder builder = Http.respond(ctx, request);
 				if (success) {
@@ -57,20 +56,9 @@ public class NetAPIs {
 			}
 		});
 
-		addHandler("__add", new UrlHandler(HttpMethod.POST, "value") {
-			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
-				if (hasSessionCookie(server, request)) {
-					Http.respond(ctx, request).JSONContent("success", true).send();
-
-				} else
-					Http.respond(ctx, request).redirect("/signin.html").send();
-			}
-		});
-
 		addHandler("__get_my_id", new UrlHandler(HttpMethod.GET) {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
 				if (hasSessionCookie(server, request)) {
 					Http.respond(ctx, request).JSONContent("id", getSessionAccount(server, request).getUserID()).send();
 				} else
@@ -78,9 +66,27 @@ public class NetAPIs {
 			}
 		});
 
+		addHandler("__add", new UrlHandler(HttpMethod.POST, "value") {
+			@Override
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				if (hasSessionCookie(server, request)) {
+					logger.info("Worked " + data);
+					PointEntry entry = PointEntry.fromJSON(getSessionAccount(server, request).getUserID(), data.getAsJsonObject("value"));
+					logger.info("made entry: " + entry);
+					server.getDatabase().getWaitingPoints().add(entry);
+					if (entry != null) {
+						Http.respond(ctx, request).JSONContent("success", true).send();
+						return;
+					}
+				}
+				Http.respond(ctx, request).redirect("/signin.html").send();
+			}
+		});
+
 		requireLogin(server, "add.html");
 		requireLogin(server, "dashboard.html");
 
+		addAccountInfoHandler(server, "__set_name", "name");
 		addAccountInfoHandler(server, "__set_indunction_date", "indunctionDate");
 		addAccountInfoHandler(server, "__set_picture_path", "picturePath");
 		addAccountInfoHandler(server, "__set_grad_year", "gradYear");
@@ -91,8 +97,8 @@ public class NetAPIs {
 
 		addHandler("__check_email", new UrlHandler(HttpMethod.GET, "email") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
-				Http.respond(ctx, request).JSONContent("has_user", server.containsUser(pairs.get("email"))).send();
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Http.respond(ctx, request).JSONContent("has_user", server.containsUser(data.getAsJsonPrimitive("email").getAsString())).send();
 			}
 		});
 	}
@@ -113,15 +119,15 @@ public class NetAPIs {
 			logger.catching(e);
 			return;
 		}
-		addHandler(url, new UrlHandler(HttpMethod.POST, "newValue") {
+		addHandler(url, new UrlHandler(HttpMethod.POST, "value") {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
 				if (hasSessionCookie(server, request)) {
 					Account account = getSessionAccount(server, request);
 					if (account == null) {
 						Http.respond(ctx, request).JSONContent("success", false).send();
 					} else {
-						String value = pairs.get("newValue");
+						String value = data.getAsJsonPrimitive("value").getAsString();
 						Class<?> type = field.getType();
 						try {
 							if (type == int.class || type == Integer.class) {
@@ -153,7 +159,7 @@ public class NetAPIs {
 	private static void requireLogin(final Server server, String url) {
 		addHandler(url, new UrlHandler(HttpMethod.GET) {
 			@Override
-			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, HashMap<String, String> pairs) throws Exception {
+			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
 				if (hasSessionCookie(server, request))
 					Http.respond(ctx, request).content(Server.PUBLIC_DIR, url).send();
 				else

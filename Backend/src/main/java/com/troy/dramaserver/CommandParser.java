@@ -49,7 +49,17 @@ public class CommandParser {
 				}
 			}
 			if (commands[0].equalsIgnoreCase("print")) {
-				if (commands[1].equalsIgnoreCase("user")) {
+				if (commands[1].equalsIgnoreCase("pending")) {
+					System.out.println("Points pending approval:");
+					for (PointEntry entry : server.getDatabase().getWaitingPoints()) {
+						System.out.println("\n" + entry);
+					}
+				} else if (commands[1].equalsIgnoreCase("approved")) {
+					System.out.println("Points with approval:");
+					for (PointEntry entry : server.getDatabase().getApprovedPoints()) {
+						System.out.println(entry);
+					}
+				} else if (commands[1].equalsIgnoreCase("user")) {
 					String username = commands[2];
 					if (server.containsUser(username)) {
 						System.out.println(server.getAccount(username));

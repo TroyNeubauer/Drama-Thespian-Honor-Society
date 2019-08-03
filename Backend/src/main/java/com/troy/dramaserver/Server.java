@@ -17,8 +17,20 @@ public class Server {
 
 	private Database database;
 	private Net net;
+	private boolean running = true;
 
 	public Server() {
+		new Thread(() -> {
+			while (running) {
+				try {
+					save();
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					logger.error("Save thread encountered an exception!");
+					logger.catching(e);
+				}
+			}
+		}).start();
 		ObjectInputStream stream = null;
 		try {
 			stream = new ObjectInputStream(new FileInputStream(DATABASE_FILE));
@@ -57,24 +69,33 @@ public class Server {
 		return database.areCredentialsValid(email, password);
 	}
 
-	public void shutdown() {
-		logger.info("Preparing to shutdown the server");
+	public void save() {
 		if (database != null) {
 			try {
 				ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(DATABASE_FILE));
 				stream.writeObject(database);
 				stream.close();
-				logger.info("Successfully saved database");
 			} catch (Exception e) {
 				logger.warn("Unable to save database file!");
 				logger.catching(e);
 			}
 		}
-		if (net != null) {
-			net.cleanUp();
-			net.join();
+	}
+
+	public void shutdown() {
+		synchronized (this) {
+			if (running) {
+				running = false;
+				logger.info("Preparing to shutdown the server");
+				save();
+				if (net != null) {
+					net.cleanUp();
+					net.join();
+				}
+				logger.info("server shutdown");
+			}
 		}
-		logger.info("server shutdown");
+
 	}
 
 	public boolean containsUser(String email) {
