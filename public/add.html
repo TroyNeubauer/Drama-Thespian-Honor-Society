@@ -94,7 +94,7 @@
 
 	function OnSubmit() {
 		var text = $("#role-input")[0].value;
-		var category = $("#category-select").text()
+		var category = $("#category-select").text();
 		var role = $("#role-select").text();
 		//Submit everything to server
 		console.log("Category: " + category + " role: " + role + " text " + text);
@@ -131,9 +131,9 @@
 			try {
 				result = JSON.parse(xhr.response);
 				if (result["success"]) {
-					alert("Success");
+					window.location.href = "/points_added.html";
 				} else {
-					alert("Failed to create account. This email is already in use");
+					alert("Failed post points request");
 				}
 			} catch(e) {
 				alert("bad JSON: " + e + " report this to the owner!");
@@ -288,7 +288,7 @@
 			</div>
 			<div class="col-12">
 				<hr class="light-100">
-				<h5>&copy; ohsths_orafutureurl.com</h5>
+				<h5>&copy; dramaserver.tk</h5>
 			</div>
 		</div>
 	</div>

@@ -223,4 +223,37 @@ let roles = [
 	name: "Assembly Program",
 	value: 0.1,
 	rate: "hour"
-}]
+},
+"Advocacy",
+{
+	name: "Participation in advocacy event",
+	value: 1,
+	rate: "day"
+},{
+	name: "Local advocacy work",
+	value: 0.1,
+	rate: "hour"
+},
+"Officers",
+{
+	name: "President",
+	value: 6
+},{
+	name: "Vice president, treasurer, or web editor",
+	value: 4
+},{
+	name: "Secretary/clerk",
+	value: 5
+},{
+	name: "International Thespian Officer (ITO)",
+	value: 10
+},{
+	name: "State Thespian Officer (STO)",
+	value: 8
+},
+"Audience",
+{
+	name: "Audience",
+	value: 0.5
+}
+]
