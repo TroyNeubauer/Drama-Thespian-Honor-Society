@@ -14,7 +14,7 @@ public class PointEntry implements Serializable {
 	private String category, role, info;
 	private PointsStorage points;
 
-	public PointEntry(long userID, String category, String role, String info, int amount, boolean oneAct) {
+	public PointEntry(long userID, String category, String role, String info, double amount, boolean oneAct) {
 		this.userID = userID;
 		this.category = category;
 		this.role = role;
@@ -22,7 +22,7 @@ public class PointEntry implements Serializable {
 		this.points = new SinglePoints(amount, oneAct);
 	}
 
-	public PointEntry(long userID, String category, String role, String info, int points) {
+	public PointEntry(long userID, String category, String role, String info, double points) {
 		this.userID = userID;
 		this.category = category;
 		this.role = role;
@@ -30,7 +30,7 @@ public class PointEntry implements Serializable {
 		this.points = new SimplePoint(points);
 	}
 
-	public PointEntry(long userID, String category, String role, String info, double rate, int amount, String rateString) {
+	public PointEntry(long userID, String category, String role, String info, double rate, double amount, String rateString) {
 		this.userID = userID;
 		this.category = category;
 		this.role = role;
@@ -69,7 +69,7 @@ public class PointEntry implements Serializable {
 				} else {// Simple object
 					logger.info("Simple points object");
 					result = new PointEntry(userID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
-							object.getAsJsonPrimitive("amount").getAsInt());
+							object.getAsJsonPrimitive("amount").getAsDouble());
 				}
 			}
 			logger.info("Returning object: " + result);
@@ -89,9 +89,9 @@ public class PointEntry implements Serializable {
 	}
 
 	public static class SimplePoint implements PointsStorage {
-		private int amount;
+		private double amount;
 
-		public SimplePoint(int amount) {
+		public SimplePoint(double amount) {
 			this.amount = amount;
 		}
 
@@ -107,10 +107,10 @@ public class PointEntry implements Serializable {
 	}
 
 	public static class SinglePoints implements PointsStorage {
-		private int amount;
+		private double amount;
 		boolean oneAct;
 
-		public SinglePoints(int amount, boolean oneAct) {
+		public SinglePoints(double amount, boolean oneAct) {
 			this.amount = amount;
 			this.oneAct = oneAct;
 		}
@@ -132,10 +132,10 @@ public class PointEntry implements Serializable {
 
 	public static class RatePoints implements PointsStorage {
 		private double rate;
-		private int amount;
+		private double amount;
 		private String rateString;
 
-		public RatePoints(double rate, int amount, String rateString) {
+		public RatePoints(double rate, double amount, String rateString) {
 			this.rate = rate;
 			this.amount = amount;
 			this.rateString = rateString;
