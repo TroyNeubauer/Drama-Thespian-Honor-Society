@@ -55,7 +55,7 @@ public class Account implements Serializable {
 	public byte[] getPicture() {
 		return picture;
 	}
-	
+
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
 	}
@@ -70,6 +70,34 @@ public class Account implements Serializable {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public void setGradYear(int gradYear) {
+		this.gradYear = gradYear;
+	}
+
+	public void setStudentID(int studentID) {
+		this.studentID = studentID;
+	}
+
+	public void setPhoneNumber(int phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setIndunctionDate(LocalDate indunctionDate) {
+		this.indunctionDate = indunctionDate;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCellPhoneNumber(int cellPhoneNumber) {
+		this.cellPhoneNumber = cellPhoneNumber;
 	}
 
 	public int getGradYear() {

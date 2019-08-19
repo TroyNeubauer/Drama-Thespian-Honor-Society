@@ -42,18 +42,48 @@
 
 <div class="container-fluid padding">
 	<div class="row text-center">
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<input id="file" type="file" accept="image/*">
 		</div>
-		<div class="col-md-4">
-			<img class="img-fluid" alt="Profile Image">
+		<div class="col-md-6">
+			<label>Your profile picture</label>
+			<img id="profile-pic" class="img-fluid" alt="Profile Image">
+		</div>
+		<div class="form-group col-md-8">
+			<label>Your name</label>
+			<input name="" class="form-control" placeholder="Name" type="text" id="name" autocomplete="off">
+		</div>
+		<div class="form-group col-md-8">
+			<label>Your name</label>
+			<input name="" class="form-control" placeholder="Name" type="text" id="name" autocomplete="off">
 		</div>
 	</div>
 </div>
 
 <script>
+	function updateProfilePic() {
+		const req = new XMLHttpRequest();
+		req.open("GET", "__get_picture");
+		req.send();
+
+		req.onload = (e) => {
+			try {
+				result = JSON.parse(req.response);
+				if (result["success"]) {
+					var src = "data:image/jpeg;base64,";
+					src += result["image"];
+					$("#profile-pic").attr('src', src);
+				} else {
+					alert("Failed to get profile picture");
+				}
+			} catch(e) {
+				alert("bad JSON: " + e + " report this to the owner!");
+			}
+		}
+	}
+
 	$( document ).ready(function() {
-		
+		updateProfilePic();
 	});
 
 	$("#file").on('change', function (e) {
@@ -139,7 +169,7 @@
 			processData: false,
 			success: function (data) {
 				if (data.success) {
-					alert('Your file was successfully uploaded!');
+					updateProfilePic();
 				} else {
 					alert('Could not upload image');
 				}

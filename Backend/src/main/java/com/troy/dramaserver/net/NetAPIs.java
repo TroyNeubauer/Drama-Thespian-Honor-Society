@@ -90,9 +90,6 @@ public class NetAPIs {
 		requireLogin(server, "add.html");
 		requireLogin(server, "dashboard.html");
 
-		addAccountInfoHandler(server, "__set_name", "name");
-		addAccountInfoHandler(server, "__set_indunction_date", "indunctionDate");
-
 		addHandler("__get_picture", new UrlHandler(HttpMethod.GET) {
 
 			@Override
@@ -150,6 +147,9 @@ public class NetAPIs {
 
 			}
 		});
+		
+		addAccountInfoHandler(server, "__set_name", "name");
+		addAccountInfoHandler(server, "__set_indunction_date", "indunctionDate");
 		addAccountInfoHandler(server, "__set_grad_year", "gradYear");
 		addAccountInfoHandler(server, "__set_student_id", "studentID");
 		addAccountInfoHandler(server, "__set_phone_number", "phoneNumber");
