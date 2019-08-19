@@ -2,14 +2,18 @@ package com.troy.dramaserver.net;
 
 import static com.troy.dramaserver.net.HttpRequestHandler.*;
 
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import javax.imageio.ImageIO;
+
 import org.apache.logging.log4j.*;
 import org.joda.time.*;
-import org.joda.time.format.*;
+import org.joda.time.format.ISODateTimeFormat;
 
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.troy.dramaserver.Server;
 import com.troy.dramaserver.database.*;
 
@@ -88,7 +92,64 @@ public class NetAPIs {
 
 		addAccountInfoHandler(server, "__set_name", "name");
 		addAccountInfoHandler(server, "__set_indunction_date", "indunctionDate");
-		addAccountInfoHandler(server, "__set_picture_path", "picturePath");
+
+		addHandler("__get_picture", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					JsonObject obj = new JsonObject();
+					obj.addProperty("success", true);
+					if (account.getPicture() == null)
+						obj.addProperty("image", (String) null);
+					else {
+						String image = Base64.getEncoder().encodeToString(account.getPicture());
+						obj.addProperty("image", image);
+					}
+					Http.respond(ctx, request).JSONContent(obj).send();
+
+				} else {
+					Http.respond(ctx, request).redirect("/signin.html").send();
+				}
+			}
+
+		});
+
+		addHandler("__set_picture", new UrlHandler(HttpMethod.POST, "image") {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					try {
+						String content = data.get("image").getAsString();
+						if (!content.startsWith("data:image/")) {
+							Http.respond(ctx, request).JSONContent("success", false).send();
+						} else {
+							byte[] image = Base64.getDecoder().decode(content.substring(content.indexOf(',') + 1));
+							BufferedImage decodedImage = ImageIO.read(new ByteArrayInputStream(image));
+							logger.info("was able to decode image!");
+							if (decodedImage.getWidth() > 256 || decodedImage.getHeight() > 256) {
+								Http.respond(ctx, request).JSONContent("success", false).send();
+								logger.warn("attempt to too large image from: " + account);
+							} else {
+								ByteArrayOutputStream stream = new ByteArrayOutputStream();
+								ImageIO.write(decodedImage, "jpeg", stream);
+								account.setPicture(stream.toByteArray());
+								logger.info("change picture of " + account + " to length " + stream.size());
+								Http.respond(ctx, request).JSONContent("success", true).send();
+							}
+						}
+					} catch (Exception e) {
+						logger.catching(e);
+						logger.warn("attempt to upload bad image from account: " + account);
+					}
+				} else
+					Http.respond(ctx, request).redirect("/signin.html").send();
+
+			}
+		});
 		addAccountInfoHandler(server, "__set_grad_year", "gradYear");
 		addAccountInfoHandler(server, "__set_student_id", "studentID");
 		addAccountInfoHandler(server, "__set_phone_number", "phoneNumber");

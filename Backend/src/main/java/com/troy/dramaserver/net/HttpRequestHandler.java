@@ -79,8 +79,8 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 			if (handler.getMethod() == HttpMethod.GET) {
 				data = getPairs(fullUrl);// Use the url for parameters
 			} else {
-				String body = request.content().toString(Charset.forName("ASCII"));
 				try {
+					String body = request.content().toString(Charset.forName("ASCII"));
 					data = MultiPartStringParser.parse(body);
 				} catch (Exception e) {
 					data = new JsonObject();
@@ -95,5 +95,11 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 		} else {
 			Http.respond(ctx, request).content("Not implemented").status(NOT_IMPLEMENTED).send();
 		}
+	}
+	
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		logger.warn("Exception at the end of the pipeline: ");
+		logger.catching(cause);
 	}
 }

@@ -3,9 +3,12 @@ package com.troy.dramaserver.net;
 import static io.netty.handler.codec.http.HttpHeaderNames.*;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import org.apache.commons.io.FilenameUtils;
+
+import com.google.gson.*;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
@@ -70,6 +73,11 @@ public class HttpResponceBuilder {
 
 	public HttpResponceBuilder JSONContent(String key, String value) {
 		return JSONContent("{\"" + key + "\":\"" + value + "\"}");// Put info format: "key":"value"
+	}
+
+	public HttpResponceBuilder JSONContent(JsonObject object) {
+		JSONContent(new Gson().toJson(object));
+		return this;
 	}
 
 	public HttpResponceBuilder JSONContent(String key, boolean value) {

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<link href="style.css" rel="stylesheet">
+	<link rel="icon" href="img/icon.png">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">
+			<img src="img/logo.png">
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="index.html">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="about.html">About</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="signin.html">Sign in</a>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+</nav>
+
+<div class="container-fluid padding">
+	<div class="row text-center">
+		<div class="col-md-4">
+			<input id="file" type="file" accept="image/*">
+		</div>
+		<div class="col-md-4">
+			<img class="img-fluid" alt="Profile Image">
+		</div>
+	</div>
+</div>
+
+<script>
+	$( document ).ready(function() {
+		
+	});
+
+	$("#file").on('change', function (e) {
+		var file = e.target.files[0];
+
+		if (file) {
+			if (/^image\//i.test(file.type)) {
+				var reader = new FileReader();
+
+				reader.onloadend = function () {
+					processFile(reader.result, file.type);
+				}
+
+				reader.onerror = function () {
+					alert('There was an error reading the image');
+				}
+
+				reader.readAsDataURL(file);
+			} else {
+				alert('Not a valid image!');
+			}
+		}
+	});
+
+
+	function processFile(dataURL, fileType) {
+		var maxWidth = 256;
+		var maxHeight = 256;
+
+		var image = new Image();
+		image.src = dataURL;
+
+		image.onload = function () {
+			var width = image.width;
+			var height = image.height;
+			var shouldResize = (width > maxWidth) || (height > maxHeight);
+
+			if (!shouldResize) {
+				sendFile(dataURL);
+				return;
+			}
+
+			var newWidth;
+			var newHeight;
+
+			if (width > height) {
+				newHeight = height * (maxWidth / width);
+				newWidth = maxWidth;
+			} else {
+				newWidth = width * (maxHeight / height);
+				newHeight = maxHeight;
+			}
+
+			var canvas = document.createElement('canvas');
+
+			canvas.width = newWidth;
+			canvas.height = newHeight;
+
+			var context = canvas.getContext('2d');
+
+			context.drawImage(this, 0, 0, newWidth, newHeight);
+
+			dataURL = canvas.toDataURL(fileType);
+
+			sendFile(dataURL);
+		};
+
+		image.onerror = function () {
+			alert('There was an error processing your image');
+		};
+	}
+
+	function sendFile(fileData) {
+		var formData = new FormData();
+
+		formData.append('image', fileData);
+
+		$.ajax({
+			type: "POST",
+			url: "__set_picture",
+			data: formData,
+			contentType: false,
+			processData: false,
+			success: function (data) {
+				if (data.success) {
+					alert('Your file was successfully uploaded!');
+				} else {
+					alert('Could not upload image');
+				}
+			},
+			error: function (data) {
+				alert('Could not upload image');
+			}
+		});
+	}
+
+</script>
+
+<!--- Footer -->
+<footer>
+	<div class="container-fluid padding">
+		<div class="row text-center">
+			<div class="col-md-4">
+				<img src="img/icon_small.png">
+				<hr class="light">
+				<p>Oakton Theatre</p>
+				<a href="mailto: postmaster@oaktondrama.org">postmaster@oaktondrama.org</a>
+				<p>
+				<a href="mailto: TIPS@oaktondrama.org">TIPS@oaktondrama.org</a>
+				<p>
+				<a href="mailto: VLGelinas@fcps.edu">VLGelinas@fcps.edu</a>
+			</div>
+			<div class="col-md-4">
+				<hr class="light">
+				<p>Designer:</p>
+				<hr class="light">
+				<p>Troy Neubauer</p>
+				<a href="mailto: troyneubauer@gmail.com">troyneubauer@gmail.com</a>
+				<p>
+				<a href="https://www.github.com/TroyNeubauer">github.com/troyneubauer</a>
+				<p></p>
+			</div>
+			<div class="col-md-4">
+				<hr class="light">
+				<p>Donated by:</p>
+				<hr class="light">
+				<p>Oakton CS Club</p>
+				<a href="mailto: oaktoncsclub@gmail.com">oaktoncsclub@gmail.com</a>
+				<P>
+				<a href="http://www.oakcsclub.win">oakcsclub.win</a>
+			</div>
+			<div class="col-12">
+				<hr class="light-100">
+				<h5>&copy; dramaserver.tk</h5>
+			</div>
+		</div>
+	</div>
+</footer>
+
+
+
+</body>
+</html>
