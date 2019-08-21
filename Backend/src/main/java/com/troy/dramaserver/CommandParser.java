@@ -33,23 +33,7 @@ public class CommandParser {
 			if (commands[0].equalsIgnoreCase("list")) {
 				if (commands[1].equalsIgnoreCase("users")) {
 					server.getDatabase().listUsers();
-				}
-			}
-			if (commands[0].equalsIgnoreCase("delete") || commands[0].equalsIgnoreCase("remove")) {
-				if (commands[1].equalsIgnoreCase("user")) {
-					String email = commands[2];
-					if (server.containsUser(email)) {
-						Account acc = server.getDatabase().removeUser(email);
-						if (acc != null)
-							System.out.println("Succscfully removed user \"" + email + "\"");
-					} else {
-						System.out.println("Unknown user \"" + email + "\"");
-					}
-
-				}
-			}
-			if (commands[0].equalsIgnoreCase("print")) {
-				if (commands[1].equalsIgnoreCase("pending")) {
+				} else if (commands[1].equalsIgnoreCase("pending")) {
 					System.out.println("Points pending approval:");
 					for (PointEntry entry : server.getDatabase().getWaitingPoints()) {
 						System.out.println("\n" + entry);
@@ -94,6 +78,21 @@ public class CommandParser {
 					for (SessionData session : sessions) {
 						System.out.println('\t' + session.toString());
 					}
+				} else if (commands[1].equalsIgnoreCase("deleted")) {
+					System.out.println("All deleted accounts");
+					for (Account account : server.getDatabase().getDeletedAccounts()) {
+						System.out.println('\t' + account.toString());
+					}
+				}
+			}
+			if (commands[0].equalsIgnoreCase("delete") || commands[0].equalsIgnoreCase("remove")) {
+				if (commands[1].equalsIgnoreCase("user")) {
+					Account acc = server.getDatabase().removeUserByLookup(commands[2]);
+					if (acc != null)
+						System.out.println("Succscfully removed user \"" + acc.getName() + "\"");
+					else
+						System.out.println("Unknown user \"" + commands[2] + "\"");
+
 				}
 			}
 		} catch (Exception e) {

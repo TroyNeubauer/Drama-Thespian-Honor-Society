@@ -11,7 +11,8 @@ public class Account implements Serializable {
 	private byte[] password, salt;
 	private LocalDate indunctionDate;
 	private boolean admin;
-	private int gradYear, studentID, phoneNumber, cellPhoneNumber;
+	private int gradYear, studentID;
+	private long phoneNumber, cellPhoneNumber;
 	private String address;
 	byte[] picture;
 
@@ -80,7 +81,7 @@ public class Account implements Serializable {
 		this.studentID = studentID;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -96,9 +97,10 @@ public class Account implements Serializable {
 		this.name = name;
 	}
 
-	public void setCellPhoneNumber(int cellPhoneNumber) {
+	public void setCellPhoneNumber(long cellPhoneNumber) {
 		this.cellPhoneNumber = cellPhoneNumber;
 	}
+	
 
 	public int getGradYear() {
 		return gradYear;
@@ -108,11 +110,11 @@ public class Account implements Serializable {
 		return studentID;
 	}
 
-	public int getPhoneNumber() {
+	public long getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public int getCellPhoneNumber() {
+	public long getCellPhoneNumber() {
 		return cellPhoneNumber;
 	}
 

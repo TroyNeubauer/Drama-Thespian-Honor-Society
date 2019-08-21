@@ -51,16 +51,124 @@
 		</div>
 		<div class="form-group col-md-8">
 			<label>Your name</label>
-			<input name="" class="form-control" placeholder="Name" type="text" id="name" autocomplete="off">
+			<input class="form-control" placeholder="Name" type="text" id="name" autocomplete="off" oninput="OnName()">
 		</div>
 		<div class="form-group col-md-8">
-			<label>Your name</label>
-			<input name="" class="form-control" placeholder="Name" type="text" id="name" autocomplete="off">
+			<label>Your email</label>
+			<input class="form-control" placeholder="Email" type="text" id="email" autocomplete="off" oninput="OnEmail()">
 		</div>
+		<div class="form-group col-md-8">
+			<label>Induction Date</label>
+			<input type="date" id="indunction_date" oninput="OnInductionDate()">
+		</div>
+
+		<div class="form-group col-md-8">
+			<label>Grad Year</label>
+			<input type="number" id="grad_year" oninput="OnGradYear()">
+		</div>
+		<div class="form-group col-md-8">
+			<label>Student ID</label>
+			<input type="number" id="student_id"  oninput="OnStudentID()">
+		</div>
+		<div class="form-group col-md-8">
+			<label>Phone Number</label>
+			<input type="tel" id="phone_number"  oninput="OnPhoneNumber()">
+		</div>
+		<div class="form-group col-md-8">
+			<label>Cell Phone Number</label>
+			<input type="tel" id="cell_phone_number"  oninput="OnCellPhoneNumber()">
+		</div>
+		<div class="form-group col-md-8">
+			<label>Address</label>
+			<input name="" class="form-control" placeholder="Address" type="text" id="address" autocomplete="off" oninput="OnAddress()">
+		</div>
+
 	</div>
 </div>
 
 <script>
+
+	$( document ).ready(function() {
+		updateProfilePic();
+		Get("name", (value) => $("#name").val(value));
+		Get("address", (value) => $("#address").val(value));
+		Get("grad_year", (value) => $("#grad_year").val(value));
+		Get("student_id", (value) => $("#student_id").val(value));
+		Get("phone_number", (value) => $("#phone_number").val(value));
+		Get("cell_phone_number", (value) => $("#cell_phone_number").val(value));
+	});
+
+	function OnName() { UpdateField("name"); }
+	function OnEmail() { UpdateField("email"); }
+	function OnAddress() { UpdateField("address"); }
+	function OnGradYear() { UpdateField("grad_year"); }
+	function OnStudentID() { UpdateField("student_id"); }
+	function OnPhoneNumber() { UpdateField("phone_number"); }
+	function OnCellPhoneNumber() { UpdateField("cell_phone_number"); }
+	function OnInductionDate() {
+		var value = $("#indunction_date").val();
+		if (value != undefined) {
+			Set("indunction_date", value);
+			console.log("sending date: " + value);
+		} else {
+			alert("Cannot find element indunction_date");
+		}
+	}
+
+	function UpdateField(what) {
+		var value = $("#" + what).val();
+		if (value != undefined) {
+			Set(what, value);
+		} else {
+			alert("Cannot find element " + what);
+		}
+	}
+
+	function Get(what, onDone) {
+		const req = new XMLHttpRequest();
+		req.open("GET", "__get_" + what);
+		req.send();
+
+		req.onload = (e) => {
+			try {
+				result = JSON.parse(req.response);
+				if (result["success"]) {
+					console.log(what + " is " + result["value"]);
+					onDone(result["value"]);
+				} else {
+					console.error("Failed to get " + what);
+					return null;
+				}
+			} catch(e) {
+				alert("bad JSON: " + e + " report this to the owner! " + req.response);
+				return null;
+			}
+		}
+	}
+
+	function Set(what, value) {
+		const req = new XMLHttpRequest();
+		var data = new FormData();
+
+		data.append("value", value);
+
+		req.open("POST", "__set_" + what);
+		req.send(data);
+
+		req.onload = (e) => {
+			try {
+				result = JSON.parse(req.response);
+				if (result["success"]) {
+					console.log("Set " + what + " to " + value);
+				} else {
+					console.error("Failed to set " + what + " to " + value);
+				}
+			} catch(e2) {
+				alert("bad JSON: " + e2 + " report this to the owner! " + req.response);
+			}
+		}
+	}
+
 	function updateProfilePic() {
 		const req = new XMLHttpRequest();
 		req.open("GET", "__get_picture");
@@ -81,10 +189,6 @@
 			}
 		}
 	}
-
-	$( document ).ready(function() {
-		updateProfilePic();
-	});
 
 	$("#file").on('change', function (e) {
 		var file = e.target.files[0];

@@ -20,6 +20,8 @@ public class Database implements Serializable {
 
 	private static final int ITERATIONS = 10000, HASH_BYTES = 64, SALT_BYTES = 32, PEPPER_BYTES = 16;
 
+	private List<Account> deletedAccounts = new ArrayList<Account>();
+	
 	// maps emails to users
 	private HashMap<String, Account> users = new HashMap<String, Account>();
 	private transient LongObjectHashMap<String> idsToEmails;
@@ -106,31 +108,63 @@ public class Database implements Serializable {
 		return result;
 	}
 
-	public Account getUser(long id) {
-		return getUser(idsToEmails.get(id));
+	// Attempts to look up a user treating line as the id or email
+	public Account lookupUser(String line) {
+		Account acc = null;
+		try {
+			long id = Long.parseLong(line);
+			acc = getUserByID(id);
+			if (acc != null)
+				return acc;
+		} catch (NumberFormatException e) {
+
+		}
+		acc = getUserByEmail(line);
+		return acc;
 	}
 
-	public Account getUser(String email) {
+	public Account getUserByID(long id) {
+		return getUserByEmail(idsToEmails.get(id));
+	}
+
+	public Account getUserByEmail(String email) {
 		if (email == null)
 			return null;
 		return users.get(email);
 	}
 
-	public Account removeUser(String email) {
-		if (email == null)
-			return null;
-		Account account;
-		synchronized (users) {
-			account = users.remove(email);
-			if (account != null) {
+	public Account removeUser(Account account) {
+		if (account != null) {
+			deletedAccounts.add(account);
+			synchronized (users) {
+				users.remove(account.getEmail());
 				idsToEmails.remove(account.getUserID());
 			}
+			cleanSessions();
 		}
 		return account;
 	}
 
-	public Account removeUser(long id) {
-		return removeUser(idsToEmails.get(id));
+	public void cleanSessions() {
+		synchronized (sessions) {
+			sessions.entrySet().removeIf(entry -> getUserByID(entry.getValue().getId()) == null);
+		}
+	}
+	
+	public List<Account> getDeletedAccounts() {
+		return deletedAccounts;
+	}
+
+	public Account removeUserByLookup(String line) {
+		return removeUser(lookupUser(line));
+	}
+
+	public Account removeUserByID(long id) {
+		return removeUser(getUserByID(id));
+	}
+
+	public Account removeUserByEmail(String email) {
+		return removeUser(getUserByEmail(email));
 	}
 
 	public SecureRandom getRandom() {
@@ -161,26 +195,32 @@ public class Database implements Serializable {
 	}
 
 	public List<SessionData> getAllSessions() {
-		return new ArrayList<>(sessions.values());
+		synchronized (sessions) {
+			return new ArrayList<>(sessions.values());
+		}
 	}
 
 	public List<SessionData> getAllValidSessions() {
-		return sessions.values().stream()//format:off
+		synchronized (sessions) {
+			return sessions.values().stream()//format:off
 			.filter(data -> data.isValid())
 			.collect(Collectors.toList());//format:on
+		}
 	}
 
 	public List<SessionData> getRecentSessions(int count) {
-		return sessions.values().stream().sorted(new Comparator<SessionData>() {
-			@Override
-			public int compare(SessionData o1, SessionData o2) {
-				long difference = -o1.getValidUntil().compareTo(o2.getValidUntil());// negate to sort closest to farthest in time
-				if (difference == 0)
-					return compareArray(o1.getData(), o2.getData());
-				else
-					return difference > 0 ? 1 : -1;
-			}
-		}).limit(count).collect(Collectors.toList());
+		synchronized (sessions) {
+			return sessions.values().stream().sorted(new Comparator<SessionData>() {
+				@Override
+				public int compare(SessionData o1, SessionData o2) {
+					long difference = -o1.getValidUntil().compareTo(o2.getValidUntil());// negate to sort closest to farthest in time
+					if (difference == 0)
+						return compareArray(o1.getData(), o2.getData());
+					else
+						return difference > 0 ? 1 : -1;
+				}
+			}).limit(count).collect(Collectors.toList());
+		}
 	}
 
 	public static <T extends Comparable<T>> int compareArray(byte[] a, byte[] b) {
@@ -216,11 +256,11 @@ public class Database implements Serializable {
 		// i.e. (a.length == b.length)
 		return 0; // "a = b", same length, all items equal
 	}
-	
+
 	public ArrayList<PointEntry> getWaitingPoints() {
 		return waitingPoints;
 	}
-	
+
 	public ArrayList<PointEntry> getApprovedPoints() {
 		return approvedPoints;
 	}

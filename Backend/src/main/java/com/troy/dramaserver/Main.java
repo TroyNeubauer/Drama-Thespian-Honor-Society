@@ -37,16 +37,19 @@ public class Main {
 		while (true) {
 			try {
 				String line = scanner.nextLine();
-				if (parser.parse(line))
-					break;
+				if (parser.parse(line)) {
+					scanner.close();
+					server.shutdown();
+					return;
+				}
+
 			} catch (NoSuchElementException e) {// There isn't stdin
 				try {
-					Thread.sleep(100);// Wait
+					logger.info("No stdin");
+					break;
 				} catch (Exception e1) {
 				}
 			}
 		}
-		scanner.close();
-		server.shutdown();
 	}
 }

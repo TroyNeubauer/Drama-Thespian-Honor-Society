@@ -96,7 +96,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 			Http.respond(ctx, request).content("Not implemented").status(NOT_IMPLEMENTED).send();
 		}
 	}
-	
+
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		logger.warn("Exception at the end of the pipeline: ");

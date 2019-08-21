@@ -24,6 +24,7 @@ public class Server {
 			while (running) {
 				try {
 					save();
+					database.cleanSessions();
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					logger.error("Save thread encountered an exception!");
@@ -103,11 +104,11 @@ public class Server {
 	}
 
 	public Account getAccount(String email) {
-		return database.getUser(email);
+		return database.getUserByEmail(email);
 	}
 
 	public Account getAccount(long id) {
-		return database.getUser(id);
+		return database.getUserByID(id);
 	}
 
 	public Database getDatabase() {
@@ -128,7 +129,7 @@ public class Server {
 
 	public Account getSession(byte[] session) {
 		SessionData data = database.getSession(session);
-		return (data == null) ? null : database.getUser(data.getId());
+		return (data == null) ? null : database.getUserByID(data.getId());
 	}
 
 }

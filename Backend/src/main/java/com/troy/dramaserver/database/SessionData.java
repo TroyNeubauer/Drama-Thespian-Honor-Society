@@ -35,8 +35,9 @@ public class SessionData implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SessionData [session=0x" + Hex.encodeHexString(data) + ", name=" + Main.server.getAccount(id).getName() + ", validUntil=" + validUntil.toString(formatter) + ", valid=" + isValid()
-				+ "]";
+		Account account = Main.server.getAccount(id);
+		return "SessionData [session=0x" + Hex.encodeHexString(data) + ", id=" + (account == null ? "deleted user(" + id + ")" : account.getName()) + ", validUntil=" + validUntil.toString(formatter)
+				+ ", valid=" + isValid() + "]";
 	}
 
 	public boolean isValid() {

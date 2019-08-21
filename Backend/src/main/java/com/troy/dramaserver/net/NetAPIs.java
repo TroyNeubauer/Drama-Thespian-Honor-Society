@@ -147,14 +147,15 @@ public class NetAPIs {
 
 			}
 		});
-		
-		addAccountInfoHandler(server, "__set_name", "name");
-		addAccountInfoHandler(server, "__set_indunction_date", "indunctionDate");
-		addAccountInfoHandler(server, "__set_grad_year", "gradYear");
-		addAccountInfoHandler(server, "__set_student_id", "studentID");
-		addAccountInfoHandler(server, "__set_phone_number", "phoneNumber");
-		addAccountInfoHandler(server, "__set_cell_phone_number", "cellPhoneNumber");
-		addAccountInfoHandler(server, "__set_address", "address");
+
+		addAccountInfoHandler(server, "name", "name");
+		addAccountInfoHandler(server, "email", "email");
+		addAccountInfoHandler(server, "indunction_date", "indunctionDate");
+		addAccountInfoHandler(server, "grad_year", "gradYear");
+		addAccountInfoHandler(server, "student_id", "studentID");
+		addAccountInfoHandler(server, "phone_number", "phoneNumber");
+		addAccountInfoHandler(server, "cell_phone_number", "cellPhoneNumber");
+		addAccountInfoHandler(server, "address", "address");
 
 		addHandler("__check_email", new UrlHandler(HttpMethod.GET, "email") {
 			@Override
@@ -173,6 +174,7 @@ public class NetAPIs {
 			logger.catching(e);
 			return;
 		}
+		final Class<?> type = field.getType();
 		try {
 			field.setAccessible(true);
 		} catch (SecurityException e) {
@@ -180,39 +182,75 @@ public class NetAPIs {
 			logger.catching(e);
 			return;
 		}
-		addHandler(url, new UrlHandler(HttpMethod.POST, "value") {
+		addHandler("__set_" + url, new UrlHandler(HttpMethod.POST, "value") {
 			@Override
 			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
-				if (hasSessionCookie(server, request)) {
-					Account account = getSessionAccount(server, request);
-					if (account == null) {
-						Http.respond(ctx, request).JSONContent("success", false).send();
-					} else {
-						String value = data.getAsJsonPrimitive("value").getAsString();
-						Class<?> type = field.getType();
-						try {
-							if (type == int.class || type == Integer.class) {
-								field.setInt(account, Integer.parseInt(value));
-							} else if (type == long.class || type == Long.class) {
-								field.setLong(account, Long.parseLong(value));
-							} else if (type == String.class) {
-								field.set(account, value);
-							} else if (type == LocalDate.class) {
-								field.set(account, ISODateTimeFormat.basicDate().parseLocalDate(value));
-							}
+				logger.info("in getting " + url);
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					String value = data.getAsJsonPrimitive("value").getAsString();
 
-							logger.info("Updated field " + field + " for user: " + account);
-							Http.respond(ctx, request).JSONContent("success", true).send();
-						} catch (Exception e) {
-							logger.info("Failed to set field " + field + " for user: " + account);
-							logger.catching(e);
-							Http.respond(ctx, request).JSONContent("success", false).send();
-							return;
+					try {
+						if (type == int.class || type == Integer.class) {
+							field.setInt(account, Integer.parseInt(value));
+						} else if (type == long.class || type == Long.class) {
+							field.setLong(account, Long.parseLong(value));
+						} else if (type == String.class) {
+							field.set(account, value);
+						} else if (type == LocalDate.class) {
+							field.set(account, ISODateTimeFormat.date().parseLocalDate(value));
 						}
+
+						logger.info("Updated field " + field + " for user: " + account);
+						Http.respond(ctx, request).JSONContent("success", true).send();
+					} catch (NumberFormatException e) {
+						field.setByte(account, (byte) 0);
+						logger.info("Number format exception! Set" + field + " to 0 for user: " + account);
+						Http.respond(ctx, request).JSONContent("success", true).send();
+					} catch (Exception e) {
+						logger.info("Failed to set field " + field + " for user: " + account);
+						logger.catching(e);
+						Http.respond(ctx, request).JSONContent("success", false).send();
+						return;
 					}
 
 				} else
-					Http.respond(ctx, request).redirect("/signin.html").send();
+					Http.respond(ctx, request).JSONContent("success", false).send();
+			}
+		});
+		addHandler("__get_" + url, new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				logger.info("in getting " + url);
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					try {
+						JsonObject result = new JsonObject();
+						Object obj = field.get(account);
+						if (obj == null) {
+							result.add("value", JsonNull.INSTANCE);
+						} else if (type == int.class || type == Integer.class || type == long.class || type == Long.class || type == byte.class || type == Byte.class || type == float.class
+								|| type == Float.class || type == double.class || type == Double.class) {
+							result.addProperty("value", ((Number) obj));
+						} else if (type == LocalDate.class) {
+							result.addProperty("value", ISODateTimeFormat.date().print((LocalDate) obj));
+						} else {
+							result.addProperty("value", String.valueOf(obj));
+						}
+
+						result.addProperty("success", true);
+						logger.info("user: " + account + " got " + field);
+						Http.respond(ctx, request).JSONContent(result).send();
+					} catch (Exception e) {
+						logger.info("Failed to get field " + field + " for user: " + account);
+						logger.catching(e);
+						Http.respond(ctx, request).JSONContent("success", false).send();
+						return;
+					}
+
+				} else
+					Http.respond(ctx, request).JSONContent("success", false).send();
 			}
 		});
 	}
@@ -255,27 +293,15 @@ public class NetAPIs {
 					break;
 				}
 			}
+			logger.warn("Unable to find session for cookies " + cookies);
+		} else {
+			logger.warn("Missing header. Cannot determine account ");
 		}
 		return null;
 	}
 
-	private static boolean hasSessionCookie(Server server, HttpRequest request) {
-		String header = request.headers().get(HttpHeaderNames.COOKIE);
-		if (header != null) {
-			Set<Cookie> cookies = ServerCookieDecoder.STRICT.decode(header);
-			for (Cookie cookie : cookies) {
-				if (cookie.name().equals(SESSION_COOKIE_NAME)) {
-					try {
-						return server.hasSession(Base64.getDecoder().decode(cookie.value()));
-					} catch (Exception e) {
-						logger.warn("Exception thrown when looking at session cookie: " + cookie.value());
-						logger.catching(e);
-					}
-					break;
-				}
-			}
-		}
-		return false;
+	private static boolean hasSessionCookie(Server server, FullHttpRequest request) {
+		return getSessionAccount(server, request) != null;
 	}
 
 }
