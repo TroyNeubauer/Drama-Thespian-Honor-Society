@@ -23,6 +23,20 @@ public class CommandParser {
 		try {
 			long start = System.currentTimeMillis();
 			String[] commands = line.split(" ");
+			if (commands[0].equalsIgnoreCase("disapprove")) {
+				if (server.getDatabase().transferPoint(Long.parseLong(commands[1]), server.getDatabase().getApprovedPoints(), server.getDatabase().getPendingPoints())) {
+					System.out.println("Successfully approved point entry");
+				} else {
+					System.out.println("Failed to approved point entry");
+				}
+			}
+			if (commands[0].equalsIgnoreCase("approve")) {
+				if (server.getDatabase().transferPoint(Long.parseLong(commands[1]), server.getDatabase().getPendingPoints(), server.getDatabase().getApprovedPoints())) {
+					System.out.println("Successfully approved point entry");
+				} else {
+					System.out.println("Failed to approved point entry");
+				}
+			}
 			if (commands[0].equalsIgnoreCase("register")) {
 				System.out.println("Register result: " + server.registerUser(commands[1], commands[2].toCharArray(), commands[3]) + " took " + (System.currentTimeMillis() - start) + " ms");
 			}
@@ -35,7 +49,7 @@ public class CommandParser {
 					server.getDatabase().listUsers();
 				} else if (commands[1].equalsIgnoreCase("pending")) {
 					System.out.println("Points pending approval:");
-					for (PointEntry entry : server.getDatabase().getWaitingPoints()) {
+					for (PointEntry entry : server.getDatabase().getPendingPoints()) {
 						System.out.println("\n" + entry);
 					}
 				} else if (commands[1].equalsIgnoreCase("approved")) {
@@ -94,6 +108,17 @@ public class CommandParser {
 						System.out.println("Unknown user \"" + commands[2] + "\"");
 
 				}
+				if (commands[1].equalsIgnoreCase("point")) {
+					if (server.getDatabase().removePoint(Long.parseLong(commands[2])))
+						System.out.println("Succscfully point id " + commands[2]);
+					else
+						System.out.println("Unknown point id " + commands[2]);
+
+				}
+			}
+			if (commands[0].equalsIgnoreCase("admin")) {
+				Account acc = server.getDatabase().lookupUser(commands[1]);
+				acc.setAdmin(Boolean.valueOf(commands[2]));
 			}
 		} catch (Exception e) {
 			System.out.println("Unknown command \"" + line + "\"");

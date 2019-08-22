@@ -46,6 +46,16 @@ html, body {
   margin-bottom: 1rem;
 }
 
+.blue {
+	color: #052E94;
+}
+
+.valid_field {
+    background: #fff url(img/check.png) no-repeat 98% center;
+    box-shadow: 0 0 5px #5cd053;
+    border-color: #28921f;
+}
+
 footer {
   background-color: #3f3f3f;
   color: #d5d5d5;
@@ -168,11 +178,3 @@ Large (lg) devices (desktops, 992px and up)
 Extra (xl) large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { ... }
 */
-
-
-
-
-
-
-
-

@@ -9,6 +9,9 @@ import org.joda.time.format.*;
 import com.troy.dramaserver.Main;
 
 public class SessionData implements Serializable {
+
+	private static final long serialVersionUID = 0;
+
 	private byte[] data;
 	private long id;
 	private DateTime validUntil;
@@ -32,6 +35,10 @@ public class SessionData implements Serializable {
 	public DateTime getValidUntil() {
 		return validUntil;
 	}
+	
+	public void setValidUntil(DateTime validUntil) {
+		this.validUntil = validUntil;
+	}
 
 	@Override
 	public String toString() {
@@ -41,6 +48,6 @@ public class SessionData implements Serializable {
 	}
 
 	public boolean isValid() {
-		return validUntil.isAfterNow();
+		return DateTime.now().isBefore(validUntil);
 	}
 }

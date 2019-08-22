@@ -9,28 +9,30 @@ import org.apache.logging.log4j.*;
 import org.joda.time.DateTime;
 
 import com.troy.dramaserver.Security;
-import com.troy.dramaserver.net.NetAPIs;
+import com.troy.dramaserver.net.*;
 
 import io.netty.util.collection.LongObjectHashMap;
 import io.netty.util.concurrent.FastThreadLocal;
 
 public class Database implements Serializable {
 
+	private static final long serialVersionUID = 0;
+
 	private static final Logger logger = LogManager.getLogger(Database.class);
 
 	private static final int ITERATIONS = 10000, HASH_BYTES = 64, SALT_BYTES = 32, PEPPER_BYTES = 16;
 
 	private List<Account> deletedAccounts = new ArrayList<Account>();
-	
+
 	// maps emails to users
 	private HashMap<String, Account> users = new HashMap<String, Account>();
 	private transient LongObjectHashMap<String> idsToEmails;
 
-	// Sessions to account ID's
+	// Sessions to session data
 	private HashMap<ByteArrayWrapper, SessionData> sessions = new HashMap<ByteArrayWrapper, SessionData>();
 
-	private ArrayList<PointEntry> approvedPoints = new ArrayList<PointEntry>(), waitingPoints = new ArrayList<PointEntry>();
-	private long nextUserID = 1;
+	private ArrayList<PointEntry> approvedPoints = new ArrayList<PointEntry>(), pendingPoints = new ArrayList<PointEntry>();
+	private long nextUserID = 1, nextPointID = 1;
 
 	private byte[] pepper = new byte[PEPPER_BYTES];
 
@@ -150,7 +152,7 @@ public class Database implements Serializable {
 			sessions.entrySet().removeIf(entry -> getUserByID(entry.getValue().getId()) == null);
 		}
 	}
-	
+
 	public List<Account> getDeletedAccounts() {
 		return deletedAccounts;
 	}
@@ -223,6 +225,10 @@ public class Database implements Serializable {
 		}
 	}
 
+	public synchronized long nextPointID() {
+		return nextPointID++;
+	}
+
 	public static <T extends Comparable<T>> int compareArray(byte[] a, byte[] b) {
 		if (a == b) { // also covers the case of two null arrays. those are considered 'equal'
 			return 0;
@@ -257,12 +263,49 @@ public class Database implements Serializable {
 		return 0; // "a = b", same length, all items equal
 	}
 
-	public ArrayList<PointEntry> getWaitingPoints() {
-		return waitingPoints;
+	public ArrayList<PointEntry> getPendingPoints() {
+		return pendingPoints;
 	}
 
 	public ArrayList<PointEntry> getApprovedPoints() {
 		return approvedPoints;
+	}
+
+	public boolean transferPoint(long id, ArrayList<PointEntry> start, ArrayList<PointEntry> end) {
+		for (int i = 0; i < start.size(); i++) {
+			PointEntry entry = start.get(i);
+			if (entry.getPointID() == id) {
+				start.remove(i);
+				end.add(entry);
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public ArrayList<PointEntry> getAllPoints() {
+		ArrayList<PointEntry> result = new ArrayList<PointEntry>(approvedPoints);
+		for (PointEntry entry : pendingPoints)
+			result.add(entry);
+		return result;
+	}
+
+	public boolean removePoint(long id) {
+		for (int i = 0; i < approvedPoints.size(); i++) {
+			if (approvedPoints.get(i).getPointID() == id) {
+				approvedPoints.remove(i);
+				return true;
+			}
+		}
+		for (int i = 0; i < pendingPoints.size(); i++) {
+			if (pendingPoints.get(i).getPointID() == id) {
+				pendingPoints.remove(i);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

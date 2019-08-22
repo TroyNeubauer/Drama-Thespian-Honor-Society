@@ -99,7 +99,11 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		logger.warn("Exception at the end of the pipeline: ");
-		logger.catching(cause);
+		if (cause instanceof javax.net.ssl.SSLException) {
+			logger.warn("Certificate unknown (javax.net.ssl.SSLException)");
+		} else {
+			logger.warn("Exception at the end of the pipeline: ");
+			logger.catching(cause);
+		}
 	}
 }

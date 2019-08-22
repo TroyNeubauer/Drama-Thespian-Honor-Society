@@ -7,40 +7,69 @@ import org.apache.logging.log4j.*;
 import com.google.gson.JsonObject;
 
 public class PointEntry implements Serializable {
+	
+	private static final long serialVersionUID = 0;
 
 	private static final Logger logger = LogManager.getLogger(PointEntry.class);
 
-	private long userID;
+	private long userID, pointID;
 	private String category, role, info;
 	private PointsStorage points;
 
-	public PointEntry(long userID, String category, String role, String info, double amount, boolean oneAct) {
+	public PointEntry(long userID, long pointID, String category, String role, String info, double amount, boolean oneAct) {
 		this.userID = userID;
+		this.pointID = pointID;
 		this.category = category;
 		this.role = role;
 		this.info = info;
 		this.points = new SinglePoints(amount, oneAct);
 	}
 
-	public PointEntry(long userID, String category, String role, String info, double points) {
+	public PointEntry(long userID, long pointID, String category, String role, String info, double points) {
 		this.userID = userID;
+		this.pointID = pointID;
 		this.category = category;
 		this.role = role;
 		this.info = info;
 		this.points = new SimplePoint(points);
 	}
 
-	public PointEntry(long userID, String category, String role, String info, double rate, double amount, String rateString) {
+	public PointEntry(long userID, long pointID, String category, String role, String info, double rate, double amount, String rateString) {
 		this.userID = userID;
+		this.pointID = pointID;
 		this.category = category;
 		this.role = role;
 		this.info = info;
 		this.points = new RatePoints(rate, amount, rateString);
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public PointsStorage getPoints() {
+		return points;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public long getUserID() {
+		return userID;
+	}
+
+	public long getPointID() {
+		return pointID;
+	}
+
 	@Override
 	public String toString() {
-		return points.toString() + " | " + category + " as " + role + ", info: " + info;
+		return points.toString() + " | " + category + " as " + role + ", info: " + info + ", id=" + pointID;
 	}
 
 	protected static String getPointsString(double points) {
@@ -50,25 +79,25 @@ public class PointEntry implements Serializable {
 			return "points";
 	}
 
-	public static PointEntry fromJSON(long userID, JsonObject object) {
+	public static PointEntry fromJSON(long userID, long nextPointID, JsonObject object) {
 		try {
 			if (!object.has("category") || !object.has("role") || !object.has("info") || !object.has("amount"))
 				return null;
 			PointEntry result;
 			if (object.has("oneAct")) {// Normal point
 				logger.info("Normal points object");
-				result = new PointEntry(userID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
+				result = new PointEntry(userID, nextPointID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
 						object.getAsJsonPrimitive("amount").getAsInt(), object.getAsJsonPrimitive("oneAct").getAsBoolean());
 			} else {
 				if (object.has("rate")) {
 					logger.info("Rate points object");
 					if (!object.has("rateString"))
 						return null;
-					result = new PointEntry(userID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
+					result = new PointEntry(userID, nextPointID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
 							object.getAsJsonPrimitive("rate").getAsDouble(), object.getAsJsonPrimitive("amount").getAsInt(), object.getAsJsonPrimitive("rateString").getAsString());
 				} else {// Simple object
 					logger.info("Simple points object");
-					result = new PointEntry(userID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
+					result = new PointEntry(userID, nextPointID, object.get("category").getAsString(), object.get("role").getAsString(), object.get("info").getAsString(),
 							object.getAsJsonPrimitive("amount").getAsDouble());
 				}
 			}
@@ -81,9 +110,15 @@ public class PointEntry implements Serializable {
 		}
 	}
 
-	private static interface PointsStorage extends Serializable {
+	public String getExtendedInfo() {
+		return points.getExtendedInfo();
+	}
+
+	public static interface PointsStorage extends Serializable {
 
 		public double getPoints();
+
+		public String getExtendedInfo();
 
 		public String toString();
 	}
@@ -103,6 +138,11 @@ public class PointEntry implements Serializable {
 		@Override
 		public String toString() {
 			return amount + " " + getPointsString(amount);
+		}
+
+		@Override
+		public String getExtendedInfo() {
+			return "";
 		}
 	}
 
@@ -128,6 +168,11 @@ public class PointEntry implements Serializable {
 		public String toString() {
 			return amount + " " + getPointsString(amount) + '(' + (oneAct ? "one act" : "full length") + ')';
 		}
+
+		@Override
+		public String getExtendedInfo() {
+			return oneAct ? "one act" : "full length";
+		}
 	}
 
 	public static class RatePoints implements PointsStorage {
@@ -149,6 +194,11 @@ public class PointEntry implements Serializable {
 		@Override
 		public String toString() {
 			return getPoints() + " " + getPointsString(getPoints()) + " " + amount + " " + rateString + "s at " + rate + " " + getPointsString(rate) + " per " + rateString;
+		}
+
+		@Override
+		public String getExtendedInfo() {
+			return amount + " " + rateString + "s at " + rate + " " + getPointsString(rate) + " per " + rateString;
 		}
 	}
 

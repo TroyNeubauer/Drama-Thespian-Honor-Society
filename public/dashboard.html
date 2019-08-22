@@ -32,7 +32,10 @@
 					<a class="nav-link" href="about.html">About</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="signin.html">Sign in</a>
+					<a class="nav-link" href="add.html">Add Points</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="signout.html">Sign Out</a>
 				</li>
 			</ul>
 		</div>
@@ -41,7 +44,11 @@
 </nav>
 
 <div class="container-fluid padding">
-	<div class="row text-center">
+	<div class="row text-center align-items-center">
+		<div class="col-md-12" id="pending"></div>
+		<div class="col-md-12" id="myPending"></div>
+		<div class="col-md-12" id="myApproved"></div>
+		<h2>Your Information</h2>
 		<div class="col-md-6">
 			<input id="file" type="file" accept="image/*">
 		</div>
@@ -58,10 +65,17 @@
 			<input class="form-control" placeholder="Email" type="text" id="email" autocomplete="off" oninput="OnEmail()">
 		</div>
 		<div class="form-group col-md-8">
+			<label>Address</label>
+			<input name="" class="form-control" placeholder="Address" type="text" id="address" autocomplete="off" oninput="OnAddress()">
+		</div>
+		<div class="form-group col-md-8">
 			<label>Induction Date</label>
 			<input type="date" id="indunction_date" oninput="OnInductionDate()">
 		</div>
-
+		<div class="form-group col-md-8">
+			<label>ITS Induction ID#</label>
+			<input type="number" id="its_id" oninput="OnITSID()">
+		</div>
 		<div class="form-group col-md-8">
 			<label>Grad Year</label>
 			<input type="number" id="grad_year" oninput="OnGradYear()">
@@ -78,25 +92,105 @@
 			<label>Cell Phone Number</label>
 			<input type="tel" id="cell_phone_number"  oninput="OnCellPhoneNumber()">
 		</div>
-		<div class="form-group col-md-8">
-			<label>Address</label>
-			<input name="" class="form-control" placeholder="Address" type="text" id="address" autocomplete="off" oninput="OnAddress()">
-		</div>
+		<div class="col-md-12" id="approved"></div>
 
 	</div>
 </div>
 
-<script>
+<div class="modal" tabindex="-1" role="dialog" id="saved">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Changes Saved</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-	$( document ).ready(function() {
+<script>
+	const userCache = new Map();
+	const waiting = "WAITING";
+
+	$(document).ready(function() {
 		updateProfilePic();
-		Get("name", (value) => $("#name").val(value));
-		Get("address", (value) => $("#address").val(value));
-		Get("grad_year", (value) => $("#grad_year").val(value));
-		Get("student_id", (value) => $("#student_id").val(value));
-		Get("phone_number", (value) => $("#phone_number").val(value));
-		Get("cell_phone_number", (value) => $("#cell_phone_number").val(value));
+		Get("__get_name", (value) => $("#name").val(value));
+		Get("__get_email", (value) => $("#email").val(value));
+		Get("__get_address", (value) => $("#address").val(value));
+		Get("__get_grad_year", (value) => $("#grad_year").val(value));
+		Get("__get_student_id", (value) => $("#student_id").val(value));
+		Get("__get_phone_number", (value) => $("#phone_number").val(value));
+		Get("__get_cell_phone_number", (value) => $("#cell_phone_number").val(value));
+		Get("__get_indunction_date", (value) => $("#indunction_date").val(value));
+		Get("__get_its_id", (value) => $("#its_id").val(value));
+		Get("__is_admin", (value) => {
+			if (value) {
+				showPoints("pending", "__get_all_pending", "Points not yet approved (admin)", "No points are currently awaiting approval", (points, div) => {
+					div.append("<button class=\"btn btn-primary btn-block\">Approve</button>");
+					div.find("button").click(function() {
+						$("#" + points["pointId"]).remove();
+						SetImpl("__approve", "pointId", points["pointId"]);
+						setTimeout(function() {
+							reloadApproved();
+						}, 200);
+					});
+				});
+				reloadApproved();
+			}
+		});
+		showPoints("myApproved", "__get_my_approved", "Your approved points", "");
+		showPoints("myPending", "__get_my_pending", "Your pending points", "");
 	});
+
+	function showPoints(domID, requestURL, pointsMessage, noPointsMessage, after) {
+		var div = $("#" + domID);
+		div.empty();
+		Get(requestURL, (value) => {
+			var message = value.length > 0 ? pointsMessage : noPointsMessage;
+			if (message.length > 0) div.append("<h2>"+message+"</h2>");
+			value.forEach((item, index) => {
+				div.append("<div id=\""+domID + item["pointId"]+"\"></div>");
+				addPoints($("#" + domID + item["pointId"]), item, function(points, div) {
+					$("#" + domID).append("<div id="+domID+item["pointId"]+"></div>");
+					if (index > 0) div.append("<hr class=\"light-100\">");
+				}, after);
+			});
+		});
+	}
+
+	function reloadApproved() {
+		showPoints("approved", "__get_all_approved", "All approved points", "No points are currently approved");
+	}
+
+	function addPointsImpl(userID, div, points, before, after) {
+		if (userCache.get(userID) == undefined) throw "userID is not defined in user cache";
+		if (before != undefined) before(points, div);
+		div.append("<p>" + points["category"] + ", " + points["role"] + "</p>");
+		div.append("<p>" + points["info"] + "</p>");
+		div.append("<p>" + points["amount"] + " point(s)</p>");
+		div.append("<p>Other info: " + points["extendedInfo"] + "</p>");
+		div.append("<p>Made by: " + userCache.get(userID)["name"] + "</p>");
+		if (after != undefined) after(points, div);
+	}
+
+	//This function adds points to the div specified.
+	//Because asynchronous data might be needed to add the points, the before and after functions are called either before or after adding points info to the div
+	function addPoints(div, points, before, after) {
+		var userID = points["userId"];
+		if (userCache.get(userID) === waiting) {
+			setTimeout(() => addPoints(div, points, before, after), 5);//We have already made the request, wait for it to arrive
+		} else if (userCache.get(userID) == undefined) {
+			userCache.set(userID, waiting);//Use waiting to signal that we are about to read the value
+			Get("__get_account?user=" + userID, (value) => {
+				userCache.set(userID, value);
+				addPointsImpl(userID, div, points, before, after);
+			});
+		} else {//Make the request
+			addPointsImpl(userID, div, points, before, after);//We have the data already
+		}
+	}
 
 	function OnName() { UpdateField("name"); }
 	function OnEmail() { UpdateField("email"); }
@@ -105,10 +199,11 @@
 	function OnStudentID() { UpdateField("student_id"); }
 	function OnPhoneNumber() { UpdateField("phone_number"); }
 	function OnCellPhoneNumber() { UpdateField("cell_phone_number"); }
+	function OnITSID() { UpdateField("its_id"); }
 	function OnInductionDate() {
 		var value = $("#indunction_date").val();
 		if (value != undefined) {
-			Set("indunction_date", value);
+			Set("__set_indunction_date", value);
 			console.log("sending date: " + value);
 		} else {
 			alert("Cannot find element indunction_date");
@@ -118,7 +213,9 @@
 	function UpdateField(what) {
 		var value = $("#" + what).val();
 		if (value != undefined) {
-			Set(what, value);
+			Set("__set_" + what, value);
+			$("#" + what).addClass("valid_field");
+			$("#saved").modal("show");
 		} else {
 			alert("Cannot find element " + what);
 		}
@@ -126,33 +223,40 @@
 
 	function Get(what, onDone) {
 		const req = new XMLHttpRequest();
-		req.open("GET", "__get_" + what);
+		req.open("GET", what);
 		req.send();
 
 		req.onload = (e) => {
 			try {
 				result = JSON.parse(req.response);
-				if (result["success"]) {
-					console.log(what + " is " + result["value"]);
-					onDone(result["value"]);
-				} else {
-					console.error("Failed to get " + what);
-					return null;
-				}
 			} catch(e) {
 				alert("bad JSON: " + e + " report this to the owner! " + req.response);
+				throw e;
+			}
+			if (result["success"]) {
+				console.log(what + " is " + result["value"]);
+				if (result["value"] == undefined)
+					throw "Illegal response from server! value is undefined";
+				onDone(result["value"]);
+			} else {
+				console.error("Failed to get " + what);
 				return null;
 			}
 		}
 	}
 
 	function Set(what, value) {
+		SetImpl(what, "value", value);
+	}
+
+	function SetImpl(what, key, value) {
+		console.log("Setting " + what + " to " + key + "=" + value);
 		const req = new XMLHttpRequest();
 		var data = new FormData();
 
-		data.append("value", value);
+		data.append(key, value);
 
-		req.open("POST", "__set_" + what);
+		req.open("POST", what);
 		req.send(data);
 
 		req.onload = (e) => {
@@ -171,7 +275,7 @@
 
 	function updateProfilePic() {
 		const req = new XMLHttpRequest();
-		req.open("GET", "__get_picture");
+		req.open("GET", "__get_my_picture");
 		req.send();
 
 		req.onload = (e) => {
@@ -321,7 +425,7 @@
 			</div>
 			<div class="col-12">
 				<hr class="light-100">
-				<h5>&copy; dramaserver.tk</h5>
+				<h5>&copy;2020. ALL RIGHTS RESERVED. OAKTON HIGH SCHOOL THEATRE ARTS DEPARTMENT and OAKTON HIGH SCHOOL DRAMA BOOSTERS, a registered 501 (c)3 non-profit organization.</h5>
 			</div>
 		</div>
 	</div>

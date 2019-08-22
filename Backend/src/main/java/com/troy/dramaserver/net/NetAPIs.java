@@ -75,9 +75,9 @@ public class NetAPIs {
 			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
 				if (hasSessionCookie(server, request)) {
 					logger.info("Worked " + data);
-					PointEntry entry = PointEntry.fromJSON(getSessionAccount(server, request).getUserID(), data.getAsJsonObject("value"));
+					PointEntry entry = PointEntry.fromJSON(getSessionAccount(server, request).getUserID(), server.getDatabase().nextPointID(), data.getAsJsonObject("value"));
 					logger.info("made entry: " + entry);
-					server.getDatabase().getWaitingPoints().add(entry);
+					server.getDatabase().getPendingPoints().add(entry);
 					if (entry != null) {
 						Http.respond(ctx, request).JSONContent("success", true).send();
 						return;
@@ -90,7 +90,44 @@ public class NetAPIs {
 		requireLogin(server, "add.html");
 		requireLogin(server, "dashboard.html");
 
-		addHandler("__get_picture", new UrlHandler(HttpMethod.GET) {
+		addHandler("__get_account", new UrlHandler(HttpMethod.GET, "user") {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account myAccount = getSessionAccount(server, request);
+				if (myAccount != null) {
+					try {
+						long requestedId = data.get("user").getAsLong();
+						if (myAccount.isAdmin() || myAccount.getUserID() == requestedId) {
+							Account account = server.getDatabase().getUserByID(requestedId);
+							if (account != null) {
+								JsonObject result = new JsonObject();
+								result.addProperty("success", true);
+
+								JsonObject acc = new JsonObject();
+								acc.addProperty("name", account.getName());
+								acc.addProperty("email", account.getEmail());
+								acc.addProperty("id", account.getUserID());
+								if (account.getPicture() == null)
+									acc.add("photo", JsonNull.INSTANCE);
+								else
+									acc.addProperty("photo", Base64.getEncoder().encodeToString(account.getPicture()));
+
+								result.add("value", acc);
+								Http.respond(ctx, request).JSONContent(result).send();
+								return;
+							}
+						}
+					} catch (Exception e) {
+					}
+					Http.respond(ctx, request).JSONContent("success", false).send();
+				} else
+					Http.respond(ctx, request).redirect("/signin.html").send();
+			}
+
+		});
+
+		addHandler("__get_my_picture", new UrlHandler(HttpMethod.GET) {
 
 			@Override
 			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
@@ -109,6 +146,20 @@ public class NetAPIs {
 				} else {
 					Http.respond(ctx, request).redirect("/signin.html").send();
 				}
+			}
+
+		});
+
+		addHandler("__approve", new UrlHandler(HttpMethod.POST, "pointId") {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null && account.isAdmin()) {
+					long id = data.get("pointId").getAsLong();
+					Http.respond(ctx, request).JSONContent("success", server.getDatabase().transferPoint(id, server.getDatabase().getPendingPoints(), server.getDatabase().getApprovedPoints())).send();
+				}
+				Http.respond(ctx, request).JSONContent("success", false).send();
 			}
 
 		});
@@ -148,6 +199,127 @@ public class NetAPIs {
 			}
 		});
 
+		addHandler("__get_my_pending", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					JsonObject result = new JsonObject();
+
+					JsonArray values = new JsonArray();
+					for (PointEntry points : server.getDatabase().getPendingPoints()) {
+						if (points.getUserID() == account.getUserID())
+							addPoint(values, points);
+					}
+					result.add("value", values);
+					result.addProperty("success", true);
+
+					Http.respond(ctx, request).JSONContent(result).send();
+				} else
+					Http.respond(ctx, request).JSONContent("success", false).send();
+
+			}
+		});
+
+		addHandler("__get_all_pending", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null && account.isAdmin()) {
+					JsonObject result = new JsonObject();
+
+					JsonArray values = new JsonArray();
+					for (PointEntry points : server.getDatabase().getPendingPoints()) {
+						addPoint(values, points);
+					}
+					result.add("value", values);
+					result.addProperty("success", true);
+
+					Http.respond(ctx, request).JSONContent(result).send();
+				} else
+					Http.respond(ctx, request).JSONContent("success", false).send();
+
+			}
+		});
+
+		addHandler("__get_my_approved", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					JsonObject result = new JsonObject();
+
+					JsonArray values = new JsonArray();
+					for (PointEntry points : server.getDatabase().getApprovedPoints()) {
+						if (points.getUserID() == account.getUserID())
+							addPoint(values, points);
+					}
+					result.add("value", values);
+					result.addProperty("success", true);
+
+					Http.respond(ctx, request).JSONContent(result).send();
+				} else
+					Http.respond(ctx, request).JSONContent("success", false).send();
+
+			}
+		});
+
+		addHandler("__get_all_approved", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null && account.isAdmin()) {
+					JsonObject result = new JsonObject();
+
+					JsonArray values = new JsonArray();
+					for (PointEntry points : server.getDatabase().getApprovedPoints()) {
+						addPoint(values, points);
+					}
+					result.add("value", values);
+					result.addProperty("success", true);
+
+					Http.respond(ctx, request).JSONContent(result).send();
+				} else
+					Http.respond(ctx, request).JSONContent("success", false).send();
+
+			}
+		});
+
+		addHandler("__is_admin", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				Account account = getSessionAccount(server, request);
+				if (account != null) {
+					JsonObject result = new JsonObject();
+
+					result.addProperty("value", account.isAdmin());
+					result.addProperty("success", true);
+
+					Http.respond(ctx, request).JSONContent(result).send();
+				} else
+					Http.respond(ctx, request).JSONContent("success", false).send();
+
+			}
+		});
+
+		addHandler("signout.html", new UrlHandler(HttpMethod.GET) {
+
+			@Override
+			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
+				SessionData session = server.getDatabase().getSession(getSession(server, request));
+				if (session != null) {
+					logger.info("logging out user: " + server.getSession(session.getData()));
+					session.setValidUntil(DateTime.now());
+					Http.respond(ctx, request).redirect("/index.html").send();
+				}
+			}
+		});
+
 		addAccountInfoHandler(server, "name", "name");
 		addAccountInfoHandler(server, "email", "email");
 		addAccountInfoHandler(server, "indunction_date", "indunctionDate");
@@ -156,6 +328,7 @@ public class NetAPIs {
 		addAccountInfoHandler(server, "phone_number", "phoneNumber");
 		addAccountInfoHandler(server, "cell_phone_number", "cellPhoneNumber");
 		addAccountInfoHandler(server, "address", "address");
+		addAccountInfoHandler(server, "its_id", "itsID");
 
 		addHandler("__check_email", new UrlHandler(HttpMethod.GET, "email") {
 			@Override
@@ -163,6 +336,18 @@ public class NetAPIs {
 				Http.respond(ctx, request).JSONContent("has_user", server.containsUser(data.getAsJsonPrimitive("email").getAsString())).send();
 			}
 		});
+	}
+
+	private static void addPoint(JsonArray values, PointEntry points) {
+		JsonObject obj = new JsonObject();
+		obj.addProperty("category", points.getCategory());
+		obj.addProperty("role", points.getRole());
+		obj.addProperty("info", points.getInfo());
+		obj.addProperty("amount", points.getPoints().getPoints());
+		obj.addProperty("userId", points.getUserID());
+		obj.addProperty("pointId", points.getPointID());
+		obj.addProperty("extendedInfo", points.getExtendedInfo());
+		values.add(obj);
 	}
 
 	private static void addAccountInfoHandler(Server server, String url, String variableName) {
@@ -185,7 +370,6 @@ public class NetAPIs {
 		addHandler("__set_" + url, new UrlHandler(HttpMethod.POST, "value") {
 			@Override
 			public void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
-				logger.info("in getting " + url);
 				Account account = getSessionAccount(server, request);
 				if (account != null) {
 					String value = data.getAsJsonPrimitive("value").getAsString();
@@ -201,7 +385,6 @@ public class NetAPIs {
 							field.set(account, ISODateTimeFormat.date().parseLocalDate(value));
 						}
 
-						logger.info("Updated field " + field + " for user: " + account);
 						Http.respond(ctx, request).JSONContent("success", true).send();
 					} catch (NumberFormatException e) {
 						field.setByte(account, (byte) 0);
@@ -222,7 +405,6 @@ public class NetAPIs {
 
 			@Override
 			protected void handleImpl(ChannelHandlerContext ctx, FullHttpRequest request, JsonObject data) throws Exception {
-				logger.info("in getting " + url);
 				Account account = getSessionAccount(server, request);
 				if (account != null) {
 					try {
@@ -240,7 +422,6 @@ public class NetAPIs {
 						}
 
 						result.addProperty("success", true);
-						logger.info("user: " + account + " got " + field);
 						Http.respond(ctx, request).JSONContent(result).send();
 					} catch (Exception e) {
 						logger.info("Failed to get field " + field + " for user: " + account);
@@ -278,14 +459,14 @@ public class NetAPIs {
 		return cookie;
 	}
 
-	protected static Account getSessionAccount(Server server, FullHttpRequest request) {
+	protected static byte[] getSession(Server server, FullHttpRequest request) {
 		String header = request.headers().get(HttpHeaderNames.COOKIE);
 		if (header != null) {
 			Set<Cookie> cookies = ServerCookieDecoder.STRICT.decode(header);
 			for (Cookie cookie : cookies) {
 				if (cookie.name().equals(SESSION_COOKIE_NAME)) {
 					try {
-						return server.getSession(Base64.getDecoder().decode(cookie.value()));
+						return Base64.getDecoder().decode(cookie.value());
 					} catch (Exception e) {
 						logger.warn("Exception thrown when looking at session cookie: " + cookie.value());
 						logger.catching(e);
@@ -298,6 +479,10 @@ public class NetAPIs {
 			logger.warn("Missing header. Cannot determine account ");
 		}
 		return null;
+	}
+
+	protected static Account getSessionAccount(Server server, FullHttpRequest request) {
+		return server.getSession(getSession(server, request));
 	}
 
 	private static boolean hasSessionCookie(Server server, FullHttpRequest request) {
