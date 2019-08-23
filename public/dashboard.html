@@ -35,11 +35,13 @@
 					<a class="nav-link" href="add.html">Add Points</a>
 				</li>
 				<li class="nav-item">
+					<a class="nav-link" href="dashboard.html">Dashboard</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link" href="signout.html">Sign Out</a>
 				</li>
 			</ul>
 		</div>
-
 	</div>
 </nav>
 
@@ -94,19 +96,6 @@
 		</div>
 		<div class="col-md-12" id="approved"></div>
 
-	</div>
-</div>
-
-<div class="modal" tabindex="-1" role="dialog" id="saved">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Changes Saved</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-		</div>
 	</div>
 </div>
 
@@ -215,7 +204,9 @@
 		if (value != undefined) {
 			Set("__set_" + what, value);
 			$("#" + what).addClass("valid_field");
-			$("#saved").modal("show");
+			setTimeout(function() {
+				$("#" + what).removeClass("valid_field");
+			}, 1500);
 		} else {
 			alert("Cannot find element " + what);
 		}
